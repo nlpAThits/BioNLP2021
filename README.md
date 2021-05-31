@@ -43,3 +43,5 @@ Markable levels   :
 (bionlp2021) foo@bar:~$ ./mmax2_flex.sh ../BioNLP2021/data/MMAX2/from_nxml/PMC3958920.mmax
 ```
 ![image info](./docs/images/mmax2_shot1.png)
+
+*Convert sample PDF to MMAX2 Format (via PNG)*
