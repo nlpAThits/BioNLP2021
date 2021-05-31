@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<common_paths>
+<scheme_path>./Common/Schemes/</scheme_path>
+<style_path>./Common/Styles/</style_path>
+<basedata_path>./Basedata/</basedata_path>
+<customization_path>./Common/Customizations/</customization_path>
+<markable_path>./Markables/</markable_path>
+<views>
+<stylesheet>pmc_1.xsl</stylesheet>
+</views>
+<annotations>
+<level name="structure" schemefile="structure_scheme.xml" customization_file="structure_customization.xml" namespace="www.h-its.org/NameSpaces/structure" at_startup="active">$_structure_markables.xml</level>
+<level name="alignments" schemefile="alignments_scheme.xml" customization_file="alignments_customization.xml" namespace="www.h-its.org/NameSpaces/alignments" at_startup="visible">$_alignments_markables.xml</level>
+</annotations>
+</common_paths>

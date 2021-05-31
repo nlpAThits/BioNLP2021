@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<customization>
+<!--<rule pattern="*worst_char_conf={(?!(99|98|97)).*}" style="background=red"/> --> <!-- All below 98 -->
+
+</customization>

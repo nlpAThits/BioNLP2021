@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<annotationscheme>
+<!--
+ <attribute id="att_type"        name="type"   type="freetext" text="Type">
+  <value    id="att_type_value"  name="type"/>
+ </attribute>
+-->
+
+	<attribute id="att_type" name="type"  type="nominal_list">
+		<value id="val_type_none" 							name="none"/>
+		<value id="val_type_span" 							name="span" 			next='att_bold,att_underline,att_italic,att_sup,att_sub'/>
+		<value id="val_type_xref" 							name="xref" 			next='att_bold,att_underline,att_italic,att_sup,att_sub'/>
+		<value id="val_type_xref-ref" 						name="xref-ref" 		next='att_bold,att_underline,att_italic,att_sup,att_sub'/>
+		<value id="val_type_xref-bibr" 						name="xref-bibr" 		next='att_bold,att_underline,att_italic,att_sup,att_sub'/>
+		<value id="val_type_xref-bib" 						name="xref-bib" 		next='att_bold,att_underline,att_italic,att_sup,att_sub'/>
+		<value id="val_type_xref-fig" 						name="xref-fig" 		next='att_bold,att_underline,att_italic,att_sup,att_sub'/>
+		<value id="val_type_xref-table" 					name="xref-table" 		next='att_bold,att_underline,att_italic,att_sup,att_sub'/>
+		<value id="val_type_xref-table-wrap" 				name="xref-table-wrap" 	next='att_bold,att_underline,att_italic,att_sup,att_sub'/>
+		<value id="val_type_xref-table-fn" 					name="xref-table-fn" 	next='att_bold,att_underline,att_italic,att_sup,att_sub'/>
+		<value id="val_type_xref-fn" 						name="xref-fn" 			next='att_bold,att_underline,att_italic,att_sup,att_sub'/>
+		<value id="val_type_xref-other" 					name="xref-other" 		next='att_bold,att_underline,att_italic,att_sup,att_sub'/>
+		<value id="val_type_xref-disp-formula" 				name="xref-disp-formula" next='att_bold,att_underline,att_italic,att_sup,att_sub'/>
+		<value id="val_type_xref-supplementary-material" 	name="xref-supplementary-material" next='att_bold,att_underline,att_italic,att_sup,att_sub'/>
+		<value id="val_type_xref-sec" 						name="xref-sec" 		next='att_bold,att_underline,att_italic,att_sup,att_sub'/>
+		<value id="val_type_xref-scheme" 					name="xref-scheme" 		next='att_bold,att_underline,att_italic,att_sup,att_sub'/>
+		<value id="val_type_xref-app" 						name="xref-app" 		next='att_bold,att_underline,att_italic,att_sup,att_sub'/>
+		<value id="val_type_xref-media" 					name="xref-media" 		next='att_bold,att_underline,att_italic,att_sup,att_sub'/>
+		<value id="val_type_xref-notes" 					name="xref-notes" 		next='att_bold,att_underline,att_italic,att_sup,att_sub'/>
+		<value id="val_type_paragraph" 						name="p" 				next='att_bold,att_underline,att_italic,att_sup,att_sub'/>
+		<value id="val_type_abstract" 						name="abstract" 		next='att_bold,att_underline,att_italic,att_sup,att_sub'/>
+		<value id="val_type_body" 							name="body" 			next='att_bold,att_underline,att_italic,att_sup,att_sub'/>
+		<value id="val_type_section" 						name="sec" 				next='att_bold,att_underline,att_italic,att_sup,att_sub'/>
+		<value id="val_type_pub_title" 						name="pub-title" 		next='att_bold,att_underline,att_italic,att_sup,att_sub'/>
+		<value id="val_type_tr" 							name="tr" 				next='att_bold,att_underline,att_italic,att_sup,att_sub'/>
+		<value id="val_type_td" 							name="td" 				next='att_colspan,att_bold,att_underline,att_italic,att_sup,att_sub'/>
+
+		<value id="val_type_title" 							name="title" 			next='att_bold,att_underline,att_italic,att_sup,att_sub'/>
+		<value id="val_type_label" 							name="label" 			next='att_bold,att_underline,att_italic,att_sup,att_sub'/>
+		<value id="val_type_aff" 							name="aff" 				next='att_bold,att_underline,att_italic,att_sup,att_sub'/>
+		<value id="val_type_email" 							name="email" 			next='att_bold,att_underline,att_italic,att_sup,att_sub'/>
+		<value id="val_type_given_names" 					name="given-names" 		next='att_bold,att_underline,att_italic,att_sup,att_sub'/>
+		<value id="val_type_surname" 						name="surname" 			next='att_bold,att_underline,att_italic,att_sup,att_sub'/>
+		<value id="val_type_caption" 						name="caption" 			next='att_bold,att_underline,att_italic,att_sup,att_sub'/>
+		<value id="val_type_rendered_tex_math" 				name="rendered-tex-math" next='att_bold,att_underline,att_italic,att_sup,att_sub'/>
+
+</attribute>
+
+<!--
+<attribute id="att_colspan"          name="colspan"   type="freetext" text="colspan">
+  <value    id="att_colspan_value"   name="colspan"/>
+</attribute>
+-->
+
+<attribute id="att_italic" name="italic"  type="nominal_list">
+	<value id="val_italic_false" name="false"/>
+	<value id="val_italic_true" name="true"/>
+</attribute>
+<attribute id="att_sup" name="sup"  type="nominal_list">
+	<value id="val_sup_false" name="false"/>
+	<value id="val_sup_true" name="true"/>
+</attribute>
+<attribute id="att_sub" name="sub"  type="nominal_list">
+	<value id="val_sub_false" name="false"/>
+	<value id="val_sub_true" name="true"/>
+</attribute>
+<attribute id="att_underline" name="underline"  type="nominal_list">
+	<value id="val_att_underline_false" name="false"/>
+	<value id="val_att_underline_true" name="true"/>
+</attribute>
+<attribute id="att_bold" name="bold"  type="nominal_list">
+	<value id="val_bold_false" name="false"/>
+	<value id="val_bold_true" name="true"/>
+</attribute>
+
+
+</annotationscheme>

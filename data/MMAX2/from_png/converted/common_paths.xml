@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!DOCTYPE common_paths>
+<common_paths>
+<basedata_path>Basedata/</basedata_path>
+<customization_path>../Common/Customizations/</customization_path>
+<scheme_path>../Common/Schemes/</scheme_path>
+<style_path>../Common/Styles/</style_path>
+<markable_path>Markables/</markable_path>
+<views>
+<stylesheet>style_1.xsl</stylesheet>
+</views>
+<annotations>
+<level 	name="ocr_words" 
+		namespace="www.h-its.org/NameSpaces/ocr_words" 
+		at_startup="active"  
+		schemefile="ocr_words_scheme.xml" 
+		customization_file="ocr_words_customization.xml">$_ocr_words_level.xml</level>
+<level 	name="ocr_lines" 
+		namespace="www.h-its.org/NameSpaces/ocr_lines" 
+		at_startup="visible" 
+		schemefile="ocr_lines_scheme.xml" 
+		customization_file="ocr_lines_customization.xml">$_ocr_lines_level.xml</level>
+<level name="alignments" 
+		schemefile="alignments_scheme.xml" 
+		customization_file="alignments_customization.xml" 
+		namespace="www.h-its.org/NameSpaces/alignments" 
+		at_startup="visible">$_alignments_markables.xml</level>
+</annotations>
+</common_paths>

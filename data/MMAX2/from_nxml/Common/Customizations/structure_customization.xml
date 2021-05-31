@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<customization>
+<rule pattern="type={pub-title,title}" 	style="bold=True        underline=True"/>
+<rule pattern="italic={true}" 			style="italic=True      foreground=black"/>
+<rule pattern="sup={true}"    			style="superscript=True foreground=black"/>
+<rule pattern="sub={true}"    			style="subscript=True   foreground=black"/>
+<rule pattern="underline={true}"    	style="underline=True   foreground=black"/>
+<rule pattern="bold={true}"    			style="bold=True        foreground=black"/>
+<!-- <rule pattern="type={xref-bibr}" 	    style="bold=True        foreground=blue"/> -->
+</customization>

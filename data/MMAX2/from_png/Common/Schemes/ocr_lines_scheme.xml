@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<annotationscheme>
+<attribute id='att_bbox' name='line_bbox' type='freetext'>
+	<value id='val_bbox' name='line_bbox'/>
+</attribute>
+
+<attribute id='att_image' name='image' type='freetext'>
+	<value id='val_image' name='image'/>
+</attribute>
+
+</annotationscheme>

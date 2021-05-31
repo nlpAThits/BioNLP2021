@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<annotationscheme>
+
+<attribute id='att_conf' name='word_conf' type='freetext'>
+	<value id='val_conf' name='word_conf'/>
+</attribute>
+
+<attribute id='att_bbox' name='word_bbox' type='freetext'>
+	<value id='val_bbox' name='word_bbox'/>
+</attribute>
+
+<attribute id='att_char_confs' name='char_confs' type='freetext'>
+	<value id='val_char_confs' name='char_confs'/>
+</attribute>
+
+<attribute id='att_char_bboxes' name='char_bboxes' type='freetext'>
+	<value id='val_char_bboxes' name='char_bboxes'/>
+</attribute>
+
+<attribute id='att_char_worst_conf' name='worst_char_conf' type='freetext'>
+	<value id='val_char_worst_conf' name='worst_char_conf'/>
+</attribute>
+
+<attribute id='att_page_no' name='page_no' type='freetext'>
+	<value id='val_page_no' name='page_no'/>
+</attribute>
+
+<attribute id='att_image' name='image' type='freetext'>
+	<value id='val_image' name='image'/>
+</attribute>
+
+
+</annotationscheme>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<annotationscheme>
+	<attribute id="att_alignment_target" name="target"   type="freetext">
+		<value id="value_alignment_target" name="target"/>
+	</attribute>
+	<attribute id="att_alignment_label" name="label"   type="freetext">
+		<value id="value_alignment_label" name="label"/>
+	</attribute>
+
+</annotationscheme>
