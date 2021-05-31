@@ -38,3 +38,8 @@ Markable levels   :
  structure        :   506 markables [DEFAULT: none defined]
  alignments       :     0 markables [DEFAULT: none defined]
 ```
+
+*Open file in MMAX2 annotation tool*
+```console
+(bionlp2021) foo@bar:~$ 
+```
