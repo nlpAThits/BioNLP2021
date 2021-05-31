@@ -1,10 +1,7 @@
 # BioNLP2021
 
-This is the code repository for the paper 
+This is the code repository for the paper [Word-Level Alignment of Paper Documents with their Electronic Full-Text Counterparts](https://www.aclweb.org/anthology/2021.bionlp-1.19.pdf)
 
-Word-Level Alignment of Paper Documents with their Electronic Full-Text Counterparts
-
-The code will be made available for the workshop.
 
 For questions, you can contact [Mark-Christoph Müller](mailto:mark-christoph.mueller@h-its.org?subject=bionlp2021)
 
@@ -38,3 +35,12 @@ Markable levels   :
  structure        :   506 markables [DEFAULT: none defined]
  alignments       :     0 markables [DEFAULT: none defined]
 ```
+
+*Open file in MMAX2 annotation tool*
+```console
+(bionlp2021) foo@bar:~$ cd ../MMAX2/
+(bionlp2021) foo@bar:~$ ./mmax2_flex.sh ../BioNLP2021/data/MMAX2/from_nxml/PMC3958920.mmax
+```
+![image info](./docs/images/mmax2_shot1.png)
+
+*Convert sample PDF to MMAX2 Format (via PNG)*
