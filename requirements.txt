@@ -12,6 +12,7 @@ Pillow==8.1.2
 pyparsing==2.4.7
 pytesseract==0.3.7
 python-dateutil==2.8.1
+python-levenshtein==0.12.2
 regex==2021.3.17
 six==1.15.0
 soupsieve==2.2.1
