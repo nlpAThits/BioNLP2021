@@ -1,10 +1,10 @@
 import argparse, os, cv2, datetime
-from dc_image_tools import *
+#from dc_image_tools import *
 #from dc_ml_tools import *
 from dc_alignment_tools import *
 from pymmax2.pyMMAX2 import *
 from glob import glob
-from PIL import Image
+# from PIL import Image
 import Levenshtein as lev
 
 def main(args):
