@@ -54,7 +54,7 @@ def main(args):
         # - an ocr token was incorrectly split by ocr, and was then corrected by pre_conflate,
         # - by de-hyphenation
         # Get tuples of ocr bd ids (list) and *one* aligned xml_bd_id for all alignments
-        for (ocr_bd_ids, xml_bd_id) in 
+        for (ocr_bd_ids, xml_bd_id) in \
             [(a.get_attributes()['target'].split("+"), a.get_spanlists()[0][0]) for a in xml_alignment_markables if a.get_attributes().get('target',None)]:
             # Go over all ocr_bd_ids that the current xml is mapped to.
             # Check context for each, but count this xml only *once* as tp or fp
