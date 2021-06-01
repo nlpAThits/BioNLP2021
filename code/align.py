@@ -8,11 +8,11 @@ from collections import Counter
 
 def main(args):
     ocr_mmax2_path                                  = args.ocr_mmax2_path
-    pmc_mmax2_path                                  = args.pmc_mmax2_path
-    ocr_in_files, pmc_in_files                      = [],[]
-    all_ocr_recalls, all_pmc_recalls                = [],[]
-    all_ocr_bd_counts, all_pmc_bd_counts            = 0,0
-    all_mapped_ocr_words, all_mapped_pmc_words      = 0,0
+    xml_mmax2_path                                  = args.xml_mmax2_path
+    ocr_in_files, xml_in_files                      = [],[]
+    all_ocr_recalls, all_xml_recalls                = [],[]
+    all_ocr_bd_counts, all_xml_bd_counts            = 0,0
+    all_mapped_ocr_words, all_mapped_xml_words      = 0,0
 
     eval_outfile=None
 #    eval_outfile = args.eval_outfile if args.eval_outfile !="" else None
@@ -30,17 +30,17 @@ def main(args):
     else:   
         ocr_in_files = [ntpath.basename(f) for f in glob(ocr_mmax2_path+"/**", recursive=True) if f.endswith(".mmax")]
 
-    if os.path.isfile(pmc_mmax2_path): 
-        pmc_in_files.append(ntpath.basename(pmc_mmax2_path))
-        pmc_mmax2_path=path.dirname(pmc_mmax2_path)+os.path.sep
+    if os.path.isfile(xml_mmax2_path): 
+        xml_in_files.append(ntpath.basename(xml_mmax2_path))
+        xml_mmax2_path=path.dirname(xml_mmax2_path)+os.path.sep
     else:   
-        pmc_in_files = [ntpath.basename(f) for f in glob(pmc_mmax2_path+"/**", recursive=True) if f.endswith(".mmax")]
+        xml_in_files = [ntpath.basename(f) for f in glob(xml_mmax2_path+"/**", recursive=True) if f.endswith(".mmax")]
 
     all_forced_alignments=[Counter()]
 
     # Get tuples of matching .mmax files
-    for (ocr_mmax2_file, pmc_mmax2_file) in \
-                [(ocr_mmax2_path + os.path.sep + a, pmc_mmax2_path + os.path.sep + a) for a in ocr_in_files if a in pmc_in_files]:
+    for (ocr_mmax2_file, xml_mmax2_file) in \
+                [(ocr_mmax2_path + os.path.sep + a, xml_mmax2_path + os.path.sep + a) for a in ocr_in_files if a in xml_in_files]:
         ocr_disc = MMAX2Discourse(ocr_mmax2_file, verbose=args.verbose, mmax2_java_binding=None)
         ocr_disc.load_markables()
 #        if not args.eval_only:
@@ -56,46 +56,46 @@ def main(args):
             ocr_disc.get_markablelevel("alignments").write(to_path=ocr_disc.get_mmax2_path()+ocr_disc.get_markable_path(), overwrite=True, no_backup=True)
         ocr_str, all_ocr_words, all_ocr_ids, _ = ocr_disc.render_string()
 
-        pmc_disc = MMAX2Discourse(pmc_mmax2_file, verbose=args.verbose, mmax2_java_binding=None)
-        pmc_disc.load_markables()
+        xml_disc = MMAX2Discourse(xml_mmax2_file, verbose=args.verbose, mmax2_java_binding=None)
+        xml_disc.load_markables()
 #        if not args.eval_only:
         # See above. 
         print("Retrieving alignment markables with label '"+args.alignment_label+"' ...", file=sys.stderr)
-        to_del=pmc_disc.get_markablelevel('alignments').get_markables_by_attribute_value('label',args.alignment_label)
+        to_del=xml_disc.get_markablelevel('alignments').get_markables_by_attribute_value('label',args.alignment_label)
         if len(to_del)>0:
             print("Removing "+len(to_del)+" markables ...", file=sys.stderr)
             for t in to_del:
                 t.delete()
             print("Done!", file=sys.stderr)
             # Save 
-            pmc_disc.get_markablelevel("alignments").write(to_path=pmc_disc.get_mmax2_path()+pmc_disc.get_markable_path(), overwrite=True, no_backup=True)
+            xml_disc.get_markablelevel("alignments").write(to_path=xml_disc.get_mmax2_path()+xml_disc.get_markable_path(), overwrite=True, no_backup=True)
 
         if eval_outfile:
             with open(eval_outfile,"a") as evalout:
                 evalout.write(ocr_disc.info(mono=True)+"\n")
-                evalout.write(pmc_disc.info(mono=True)+"\n\n")
+                evalout.write(xml_disc.info(mono=True)+"\n\n")
 
         if args.dry_run:    continue
-        pmc_str, all_pmc_words, all_pmc_ids, _ = pmc_disc.render_string()
+        xml_str, all_xml_words, all_xml_ids, _ = xml_disc.render_string()
 
         if True: #not args.eval_only:
             if int(args.pre_comp_size)>0:
                 # No effect on alignmnt quality 
-                all_ocr_words, all_ocr_ids, all_pmc_words, all_pmc_ids = \
-                    compress(all_ocr_words, all_ocr_ids, all_pmc_words, all_pmc_ids, int(args.pre_comp_size), recursive=args.pre_comp_recursive, verbose=args.verbose)
+                all_ocr_words, all_ocr_ids, all_xml_words, all_xml_ids = \
+                    compress(all_ocr_words, all_ocr_ids, all_xml_words, all_xml_ids, int(args.pre_comp_size), recursive=args.pre_comp_recursive, verbose=args.verbose)
             if args.de_hyphenate:
                 # Positive effect on quality 
                 all_ocr_words, all_ocr_ids = \
-                    conflate_hyphenated_ocr_splits(all_ocr_words, all_ocr_ids, all_pmc_words, all_pmc_ids, fold=True, verbose=args.verbose)            
+                    conflate_hyphenated_ocr_splits(all_ocr_words, all_ocr_ids, all_xml_words, all_xml_ids, fold=True, verbose=args.verbose)            
             if args.pre_conflate:
                 all_ocr_words, all_ocr_ids = \
-                    conflate_exact_ocr_splits(all_ocr_words, all_ocr_ids, all_pmc_words, all_pmc_ids, recursive=True, verbose=args.verbose)
+                    conflate_exact_ocr_splits(all_ocr_words, all_ocr_ids, all_xml_words, all_xml_ids, recursive=True, verbose=args.verbose)
             if args.pre_split:        
                 all_ocr_words, all_ocr_ids = \
-                    split_exact_ocr_conflations(all_ocr_words, all_ocr_ids, all_pmc_words, all_pmc_ids, recursive=True, verbose=args.verbose)
+                    split_exact_ocr_conflations(all_ocr_words, all_ocr_ids, all_xml_words, all_xml_ids, recursive=True, verbose=args.verbose)
 
-            ocr_words_al, ocr_ids_al, pmc_words_al, pmc_ids_al = \
-                align_tokens(all_ocr_words, all_ocr_ids, all_pmc_words, all_pmc_ids, gap_char="<<GAP>>", method=args.alignment_type)
+            ocr_words_al, ocr_ids_al, xml_words_al, xml_ids_al = \
+                align_tokens(all_ocr_words, all_ocr_ids, all_xml_words, all_xml_ids, gap_char="<<GAP>>", method=args.alignment_type)
                                                                           
             # Important! No matter what the pre-processing was, align above will have introduced *errors*.
             # Maybe post-proc alignments, in partocular before passing them on to post_forcealign
@@ -108,7 +108,7 @@ def main(args):
 
             # The effect of forcealign might be rather small (as borne out in the align eval), because it will ignore all the elements that were 
             if args.post_forcealign:
-                ocr_words_al, ocr_ids_al, pmc_words_al, pmc_ids_al = forcealign_tokens(ocr_words_al, ocr_ids_al, pmc_words_al, pmc_ids_al,
+                ocr_words_al, ocr_ids_al, xml_words_al, xml_ids_al = forcealign_tokens(ocr_words_al, ocr_ids_al, xml_words_al, xml_ids_al,
                                                                                                           all_forced_alignments, dynamic=True, 
                                                                                                           recursive=args.post_forcealign_recursive, 
                                                                                                           gap_char="<<GAP>>", verbose=args.verbose)
@@ -119,26 +119,26 @@ def main(args):
                 #print(all_forced_alignments[0])
 
             # Both lists should have the same length now
-            check_alignment(ocr_words_al, pmc_words_al, ocr_ids_al, pmc_ids_al)
+            check_alignment(ocr_words_al, xml_words_al, ocr_ids_al, xml_ids_al)
     #        if args.verbose:
     #            for i in range(len(ocr_words_al)): 
-    #                #if ocr_ids_aligned[i] != "NONE" and  pmc_ids_aligned[i] != "NONE":
-    #                print(str(i)+"\t"+ocr_words_al[i]+"\t"+ocr_ids_al[i]+"\t"+pmc_words_al[i]+"\t"+pmc_ids_al[i])
-            ocr2pmc=create_id_to_id_mapping(ocr_words_al, pmc_words_al, ocr_ids_al, pmc_ids_al)
+    #                #if ocr_ids_aligned[i] != "NONE" and  xml_ids_aligned[i] != "NONE":
+    #                print(str(i)+"\t"+ocr_words_al[i]+"\t"+ocr_ids_al[i]+"\t"+xml_words_al[i]+"\t"+xml_ids_al[i])
+            ocr2pmc=create_id_to_id_mapping(ocr_words_al, xml_words_al, ocr_ids_al, xml_ids_al)
 
             # Mapping dict done
             # Create alignments & eval
             for ocr_id in ocr2pmc.keys():
                 # ocr_id is always atomic
-                # pmc_ids might be +-separated list
-                pmc_id_string = ocr2pmc[ocr_id]
+                # xml_ids might be +-separated list
+                xml_id_string = ocr2pmc[ocr_id]
 
                 m_done=False
                 # We now distinguish different alignments by 'label'. First check if markable FOR THE CURRENT LABEL exists for ocr_id already.
                 for k in ocr_disc.get_markablelevel("alignments").get_markables_for_basedata(ocr_id):
                     if k.get_attributes().get('label','')==args.alignment_label:
                         # Update this markable
-                        k.update_attributes({'target':k.get_attributes()['target']+"+"+pmc_id_string})
+                        k.update_attributes({'target':k.get_attributes()['target']+"+"+xml_id_string})
                         m_done=True
                         break
                 if not m_done:
@@ -146,25 +146,25 @@ def main(args):
                     new_m, m = ocr_disc.get_markablelevel("alignments").add_markable(spanlists=[[ocr_id]], allow_duplicate_spans=True, apply_default=True)
                     # Now, no markable can exist here
                     assert new_m            
-                    m.update_attributes({'target':pmc_id_string, 'label':args.alignment_label})
+                    m.update_attributes({'target':xml_id_string, 'label':args.alignment_label})
 
                 # PMC --> OCR. Create markable on PMC level.
                 # A markable might exist there already 
-                for pmc_id in pmc_id_string.split("+"):
+                for xml_id in xml_id_string.split("+"):
                     m_done=False
-                    # We now distinguish different alignments by 'label'. First check if markable FOR THE CURRENT LABEL exists for pmc_id already.
-                    for k in pmc_disc.get_markablelevel("alignments").get_markables_for_basedata(pmc_id):
+                    # We now distinguish different alignments by 'label'. First check if markable FOR THE CURRENT LABEL exists for xml_id already.
+                    for k in xml_disc.get_markablelevel("alignments").get_markables_for_basedata(xml_id):
                         if k.get_attributes().get('label','')==args.alignment_label:
                             k.update_attributes({'target':k.get_attributes()['target']+"+"+ocr_id})    
                             m_done=True
                             break
                     if not m_done:                    
-                        new_m, m = pmc_disc.get_markablelevel("alignments").add_markable(spanlists=[[pmc_id]], allow_duplicate_spans=True, apply_default=True)
+                        new_m, m = xml_disc.get_markablelevel("alignments").add_markable(spanlists=[[xml_id]], allow_duplicate_spans=True, apply_default=True)
                         assert new_m
                         #if new_m:   
                         m.update_attributes({'target':ocr_id, 'label':args.alignment_label})
 
-            pmc_disc.get_markablelevel("alignments").write(to_path=pmc_disc.get_mmax2_path()+pmc_disc.get_markable_path(), overwrite=True, no_backup=True)
+            xml_disc.get_markablelevel("alignments").write(to_path=xml_disc.get_mmax2_path()+xml_disc.get_markable_path(), overwrite=True, no_backup=True)
             ocr_disc.get_markablelevel("alignments").write(to_path=ocr_disc.get_mmax2_path()+ocr_disc.get_markable_path(), overwrite=True, no_backup=True)        
 
         # How much of the pmc version could be mapped to ocr version?
@@ -172,7 +172,7 @@ def main(args):
         # Todo: Fix based on # of bd_items, not just alignment markables. Done
         # Count no of ocr words that appear as target in all pmc alignments for current args.alignment_label
         mapped_ocr_words=0
-        for d in pmc_disc.get_markablelevel('alignments').get_markables_by_attribute_value('label',args.alignment_label):
+        for d in xml_disc.get_markablelevel('alignments').get_markables_by_attribute_value('label',args.alignment_label):
             mapped_ocr_words+=len(d.get_attributes().get('target','').split("+"))
         # For micro-avg
         all_mapped_ocr_words    += mapped_ocr_words
@@ -186,35 +186,35 @@ def main(args):
         all_ocr_recalls.append(r_ocr)
 
         # Count no of pmc words that appear as target in all ocr alignments for current args.alignment_label
-        mapped_pmc_words=0
+        mapped_xml_words=0
         for d in ocr_disc.get_markablelevel('alignments').get_markables_by_attribute_value('label',args.alignment_label):
-            mapped_pmc_words+=len(d.get_attributes().get('target','').split("+"))
+            mapped_xml_words+=len(d.get_attributes().get('target','').split("+"))
         # For micro-avg
-        all_mapped_pmc_words+=mapped_pmc_words
-        all_pmc_bd_counts+=pmc_disc.get_bd_count()
+        all_mapped_xml_words+=mapped_xml_words
+        all_xml_bd_counts+=xml_disc.get_bd_count()
         # r_pmc is the fraction of mapped ocr words in all pmc words for the current doc pair        
-        r_pmc = mapped_pmc_words / pmc_disc.get_bd_count()
+        r_pmc = mapped_xml_words / xml_disc.get_bd_count()
         print("R_pmc:" + str(r_pmc))
         if eval_outfile:
             with open(eval_outfile,"a") as evalout:
-                evalout.write(pmc_mmax2_file + " R_pmc " + str(r_pmc)+"\n")
-        all_pmc_recalls.append(r_pmc)
+                evalout.write(xml_mmax2_file + " R_pmc " + str(r_pmc)+"\n")
+        all_xml_recalls.append(r_pmc)
 
 #    # All file pairs have been processed
-#    if len(all_pmc_recalls)>0:
-#        assert len(all_pmc_recalls) == len(all_ocr_recalls)
-#        print("Avg. R_pmc (macro)\t"+str(np.mean(all_pmc_recalls)) +" (+/- "+str(np.std(all_pmc_recalls)) +", n="+str(len(all_pmc_recalls))+")")
-#        print("Avg. R_pmc (micro)\t"+str(all_mapped_pmc_words/all_pmc_bd_counts) +", n="+str(len(all_pmc_recalls))+")")
+#    if len(all_xml_recalls)>0:
+#        assert len(all_xml_recalls) == len(all_ocr_recalls)
+#        print("Avg. R_pmc (macro)\t"+str(np.mean(all_xml_recalls)) +" (+/- "+str(np.std(all_xml_recalls)) +", n="+str(len(all_xml_recalls))+")")
+#        print("Avg. R_pmc (micro)\t"+str(all_mapped_xml_words/all_xml_bd_counts) +", n="+str(len(all_xml_recalls))+")")
 
-#        print("Avg. R_ocr (macro)\t"+str(np.mean(all_ocr_recalls)) +" (+/- "+str(np.std(all_ocr_recalls)) +", n="+str(len(all_pmc_recalls))+")")
-#        print("Avg. R_ocr (micro)\t"+str(all_mapped_ocr_words/all_ocr_bd_counts)  +", n="+str(len(all_pmc_recalls))+")")
+#        print("Avg. R_ocr (macro)\t"+str(np.mean(all_ocr_recalls)) +" (+/- "+str(np.std(all_ocr_recalls)) +", n="+str(len(all_xml_recalls))+")")
+#        print("Avg. R_ocr (micro)\t"+str(all_mapped_ocr_words/all_ocr_bd_counts)  +", n="+str(len(all_xml_recalls))+")")
 #        if eval_outfile:
 #            with open(eval_outfile,"a") as evalout:
 #                evalout.write("Eval for alignment: "+str(args.alignment_label)+"\n")
-#                evalout.write("Avg. R_pmc (macro)\t"+str(np.mean(all_pmc_recalls)) +" (+/- "+str(np.std(all_pmc_recalls)) +", n="+str(len(all_pmc_recalls))+")\n")
-#                evalout.write("Avg. R_pmc (micro)\t"+str(all_mapped_pmc_words/all_pmc_bd_counts) +", n="+str(len(all_pmc_recalls))+")\n")
-#                evalout.write("Avg. R_ocr (macro)\t"+str(np.mean(all_ocr_recalls)) +" (+/- "+str(np.std(all_ocr_recalls)) +", n="+str(len(all_pmc_recalls))+")\n")
-#                evalout.write("Avg. R_ocr (micro)\t"+str(all_mapped_ocr_words/all_ocr_bd_counts)  +", n="+str(len(all_pmc_recalls))+")\n")
+#                evalout.write("Avg. R_pmc (macro)\t"+str(np.mean(all_xml_recalls)) +" (+/- "+str(np.std(all_xml_recalls)) +", n="+str(len(all_xml_recalls))+")\n")
+#                evalout.write("Avg. R_pmc (micro)\t"+str(all_mapped_xml_words/all_xml_bd_counts) +", n="+str(len(all_xml_recalls))+")\n")
+#                evalout.write("Avg. R_ocr (macro)\t"+str(np.mean(all_ocr_recalls)) +" (+/- "+str(np.std(all_ocr_recalls)) +", n="+str(len(all_xml_recalls))+")\n")
+#                evalout.write("Avg. R_ocr (micro)\t"+str(all_mapped_ocr_words/all_ocr_bd_counts)  +", n="+str(len(all_xml_recalls))+")\n")
 
     if eval_outfile: 
         with open(eval_outfile,"a") as evalout:
@@ -227,7 +227,7 @@ if __name__ == '__main__':
     # Path to file containing previously MMAX2-converted OCR files (named PMCXXXXXXX.mmax), or exactly one such file.
     parser.add_argument('--ocr_mmax2_path',     required = True) 
     # Path to file containing previously MMAX2-converted PMC files (named PMCXXXXXXX.mmax), or exactly one such file.    
-    parser.add_argument('--pmc_mmax2_path',     required = True) 
+    parser.add_argument('--xml_mmax2_path',     required = True) 
 
     # Label to be assigned to alignment markables created by this alignment 
     parser.add_argument('--alignment_label',    required = True)
@@ -258,8 +258,6 @@ if __name__ == '__main__':
     # Do not modify alignment markables, just compute alignment evaluation for the data with label = args.alignment_label
 #    parser.add_argument('--eval_only',          dest='eval_only',       action='store_true',    default=False)
 #    parser.add_argument('--eval_outfile',       required = False,       default = "evalout.txt")
-
-
 
     main(parser.parse_args())
 
