@@ -54,22 +54,25 @@ def main(args):
         # - an ocr token was incorrectly split by ocr, and was then corrected by pre_conflate,
         # - by de-hyphenation
         # Get tuples of ocr bd ids (list) and *one* aligned xml_bd_id for all alignments
-        for (ocr_bd_ids, xml_bd_id) in \
-            [(a.get_attributes()['target'].split("+"), a.get_spanlists()[0][0]) for a in xml_alignment_markables if a.get_attributes().get('target',None)]:
+        for (ocr_bd_ids, xml_bd_id, xml_al_markable) in \
+            [(a.get_attributes()['target'].split("+"), a.get_spanlists()[0][0], a) for a in xml_alignment_markables if a.get_attributes().get('target',None)]:
             # Go over all ocr_bd_ids that the current xml is mapped to.
             # Check context for each, but count this xml only *once* as tp or fp
-            xml_bd_label=""
-            lsep = "  >>  "
-            rsep = "  <<  "
+            xml_bd_label    = ""
+            lsep            = "  >>  "
+            rsep            = "  <<  "
             # This is the same for all ocr_bd_ids
-            kwic_xml            = kwic_string_for_elements([xml_bd_id], xml_disc.get_basedata(), lsep=lsep, rsep=rsep, strip=True, width=kwic_width, fillwidth=60)
+            kwic_xml            = kwic_string_for_elements([xml_bd_id], xml_disc.get_basedata(), 
+                                        lsep=lsep, rsep=rsep, strip=True, width=kwic_width, fillwidth=60)
             xml_left_context    = kwic_xml.split(lsep)[0].strip()
             xml_right_context   = kwic_xml.split(rsep)[-1].strip()
             for ocr_bd_id in ocr_bd_ids:
                 # ocr_bd_id *must* have *exactly one* alignment markable with xml_bd_id as target
-                aligned_xml_bd_id = [a.get_attributes()['target'] for a in ocr_disc.get_markablelevel('alignments').get_markables_for_basedata(ocr_bd_id) if a.get_attributes()['label']==args.alignment_label]
+                aligned_xml_bd_id = [(a.get_attributes()['target'], a) for a in ocr_disc.get_markablelevel('alignments').get_markables_for_basedata(ocr_bd_id) if a.get_attributes()['label']==args.alignment_label]
                 assert len(aligned_xml_bd_id)   == 1 
-                if not xml_bd_id in aligned_xml_bd_id[0].split('+'):
+                ocr_al_markable = aligned_xml_bd_id[0][1]
+
+                if not xml_bd_id in aligned_xml_bd_id[0][0].split('+'):
                     print("CRITICAL ERROR!!",xml_mmax2_file)
 
                 # Left and right context must match min sim for *all* ocr ids in order for xml id to count as TP
@@ -77,13 +80,15 @@ def main(args):
                 kwic_ocr            = kwic_string_for_elements([ocr_bd_id], ocr_disc.get_basedata(), lsep=lsep, rsep=rsep, strip=True, width=kwic_width, fillwidth=60)
                 ocr_left_context    = kwic_ocr.split(lsep)[0].strip()
                 ocr_right_context   = kwic_ocr.split(rsep)[-1].strip()
-                left_sim            = 1-lev.distance(xml_left_context, ocr_left_context) / max(len(xml_left_context), len(ocr_left_context))
+                left_sim            = 1-lev.distance(xml_left_context,  ocr_left_context)  / max(len(xml_left_context),  len(ocr_left_context))
                 right_sim           = 1-lev.distance(xml_right_context, ocr_right_context) / max(len(xml_right_context), len(ocr_right_context))
 
                 # BOTH context sims must be > 50
                 if left_sim>=min_norm_lev_sim and right_sim>=min_norm_lev_sim:
                     # The current xml bd is a tp, and will stay that unless it is overwritten by fp later
                     xml_bd_label="TP"
+                    print(xml_al_markable)
+                    print(ocr_al_markable)
                 else:
                     xml_bd_label="FP"
                     # If one ocr bd does not match, the entire xml bd does not match, so stop searching and comparing
@@ -105,8 +110,7 @@ def main(args):
         # all xml bds in current file have been processed
         # Collect total number of xml bds
         xml_bd_all+=xml_disc.get_bd_count()
-#        print("BD in xml ",xml_disc.get_bd_count())
-        # Compute p for current pair
+        # Compute p for current pair of documents
         p_xml   =   xml_tp_doc/(xml_tp_doc+xml_fp_doc)  # Correctly found / all found
         r_xml   =   xml_tp_doc/xml_disc.get_bd_count()  # Correctly found / all correct. Note: This assumes that all elements in xml can actually be mapped.
         try:                        f_xml   = (2*p_xml*r_xml) / (p_xml+r_xml)
