@@ -41,9 +41,15 @@ def main(args):
     for (ocr_mmax2_file, xml_mmax2_file) in [(ocr_mmax2_path + os.path.sep + a, xml_mmax2_path + os.path.sep + a) for a in ocr_in_files if a in xml_in_files]:        
         n+=1    # Count all doc pairs
         ocr_disc = MMAX2Discourse(ocr_mmax2_file, verbose=args.verbose, mmax2_java_binding=None)
-        ocr_disc.load_markables()
+        ocr_disc.load_markables()            
         xml_disc = MMAX2Discourse(xml_mmax2_file, verbose=args.verbose, mmax2_java_binding=None)
         xml_disc.load_markables()
+        if args.add_validation:
+            # Reset validated values 
+            for o in [ocr_disc.get_markablelevel('alignments').get_markables_by_attribute_value('label', args.alignment_label)]:
+                o.update_attributes({'validated':'u'})                
+            for o in [xml_disc.get_markablelevel('alignments').get_markables_by_attribute_value('label', args.alignment_label)]:
+                o.update_attributes({'validated':'u'})                
         xml_tp_doc, xml_fp_doc = 0, 0 # Counter for doc_level tp and fp
         # Our main eval dataset is xml, i.e. how many tokens from xml could be correctly mapped to an ocr token
         xml_alignment_markables = xml_disc.get_markablelevel('alignments').get_markables_by_attribute_value('label', args.alignment_label) 
@@ -90,10 +96,11 @@ def main(args):
                     if args.add_validation:
                         xml_al_markable.update_attributes({'validated':'y'})
                         ocr_al_markable.update_attributes({'validated':'y'})
-                        print(xml_al_markable.get_attributes())
-                        print(ocr_al_markable.get_attributes())
                 else:
                     xml_bd_label="FP"
+                    if args.add_validation:
+                        xml_al_markable.update_attributes({'validated':'n'})
+                        ocr_al_markable.update_attributes({'validated':'n'})
                     # If one ocr bd does not match, the entire xml bd does not match, so stop searching and comparing
                     break
                 # Move on to next ocr_id
@@ -109,6 +116,10 @@ def main(args):
                 xml_fp_doc+=1
                 xml_fp_all+=1
             # go on to next mapped xml_bd_id
+
+        if args.add_validation:
+            xml_disc.get_markablelevel("alignments").write(to_path=xml_disc.get_mmax2_path()+xml_disc.get_markable_path(), overwrite=True, no_backup=False)
+            ocr_disc.get_markablelevel("alignments").write(to_path=ocr_disc.get_mmax2_path()+ocr_disc.get_markable_path(), overwrite=True, no_backup=False)        
 
         # all xml bds in current file have been processed
         # Collect total number of xml bds
