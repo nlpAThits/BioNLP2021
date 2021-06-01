@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <customization>
-<rule pattern="{all}" style="background=pink"/>
+<rule pattern="validated={u}" style="background=pink"/>
+<rule pattern="validated={y}" style="background=green"/>
+<rule pattern="validated={n}" style="background=red"/>
 </customization>
