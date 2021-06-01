@@ -39,6 +39,7 @@ def main(args):
         mmax2_disc.load_markables()
 
         png_paths = pdf_to_pngs(in_file, out_dir=args.png_base_path, save_as_base="", force_new=args.force_new_png, dpi=args.dpi)
+        print(png_paths)
         for page_no, png_path in enumerate(png_paths):
             # Read as grayscale
             fg_img          = cv2.imread(png_path, cv2.IMREAD_GRAYSCALE)
