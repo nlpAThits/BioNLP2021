@@ -327,11 +327,11 @@ def latex_to_text(latex_string, cleanup=True):
     if text != "":  return text
     else:           return None
 
-def pdf_to_pngs(pdf_file, out_dir="./", save_as_base="", dpi=600, force_new=False):
+def pdf_to_pngs(pdf_file, out_dir="./", save_as_base="", dpi=300, force_new=False):
     png_paths=[]
     if not os.path.exists(out_dir):
         os.mkdir(out_dir)
-    out_file_base = save_as_base+ntpath.basename(pdf_file)+"-page"
+    out_file_base = save_as_base+ntpath.basename(pdf_file)+"@"+str(dpi)+"DPI-page"
     newly_created=False
     # Assume page 001 exists if whole doc exists
     if force_new or not os.path.exists(out_dir+"/"+out_file_base+"-001.png"):
@@ -341,7 +341,6 @@ def pdf_to_pngs(pdf_file, out_dir="./", save_as_base="", dpi=600, force_new=Fals
     if newly_created:
         print("\t\tRenaming images ...", file=sys.stderr)
         for i, png_file in sorted([ (int(a.split("-")[-1].split(".")[0]),  a) for a in os.listdir(out_dir+"/") if a.startswith(out_file_base)], key=itemgetter(0)):
-            #png_paths.append(out_dir+"/"+png_file.split("-")[0]+"-page-"+str(i).zfill(3)+".png")
             png_paths.append(out_dir+"/"+png_file[:png_file.rfind("-")]+"-"+str(i).zfill(3)+".png")            
             os.rename(out_dir+"/"+png_file, png_paths[-1])
     else:
