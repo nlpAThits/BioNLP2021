@@ -61,12 +61,12 @@ if __name__ == '__main__':
     parser.add_argument('--pdf_path',           required = True)
     parser.add_argument('--mmax2_base_path',    required = True)
     parser.add_argument('--png_base_path',      required = True)
+    parser.add_argument('--tessdata_dir',       required = True)
 
-    parser.add_argument('--tessdata_dir',       required = False, default = "tessdata")
     parser.add_argument('--dpi',                required = False, default = "300")
     
-    parser.add_argument('--force_new_png',      required = False, default = False, dest='force_new_png',  action='store_true')
-    parser.add_argument('--force_new_mmax2',    required = False, default = False, dest='force_new_mmax2',  action='store_true')
+    parser.add_argument('--force_new_png',      required = False, default = False, dest='force_new_png',   action='store_true')
+    parser.add_argument('--force_new_mmax2',    required = False, default = False, dest='force_new_mmax2', action='store_true')
 
     main(parser.parse_args())
 
