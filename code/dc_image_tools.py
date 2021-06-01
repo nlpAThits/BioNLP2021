@@ -332,18 +332,18 @@ def pdf_to_pngs(pdf_file, out_dir="./", save_as_base="", dpi=300, force_new=Fals
     if not os.path.exists(out_dir):
         os.mkdir(out_dir)
     out_file_base = save_as_base+ntpath.basename(pdf_file)+"@"+str(dpi)+"DPI-page"
-    newly_created=False
-    # Assume whole doc exists if page 001 exists
-    if force_new or not os.path.exists(out_dir+"/"+out_file_base+"-001.png"):
+#    newly_created=False
+    # Assume whole doc exists if page 01 exists
+    if force_new or not os.path.exists(out_dir+"/"+out_file_base+"-01.png"):
         print("\tConverting "+pdf_file+" to "+ str(dpi)+" dpi PNG file ...", file=sys.stderr)
         newly_created=True
         # This will overwrite any existing files of the same name
         subprocess.check_output(["pdftocairo", "-r", str(dpi), "-png", pdf_file, out_dir+"/"+out_file_base])
-    # if newly_created:
-    #     print("\t\tRenaming images ...", file=sys.stderr)
-    #     # Get all images relating to the current file. 
-    #     # This will also include any *previous* results that were renamed already!
-    #     for i, png_file in sorted([ (int(a.split("-")[-1].split(".")[0]),  a) for a in os.listdir(out_dir+"/") if a.startswith(out_file_base)], key=itemgetter(0)):
+    else: 
+        print("Using existing images ...", file=sys.stderr)        
+    for i, png_file in sorted([ (int(a.split("-")[-1].split(".")[0]),  a) for a in os.listdir(out_dir+"/") if a.startswith(out_file_base)], key=itemgetter(0)):
+        png_paths.append(new_png_file)
+
     #         # Create name to which the current pdftocairo output will be renamed.
     #         new_png_file = out_dir+"/"+png_file[:png_file.rfind("-")]+"-"+str(i).zfill(3)+".png"
     #         if os.path.isfile(new_png_file):
@@ -354,11 +354,11 @@ def pdf_to_pngs(pdf_file, out_dir="./", save_as_base="", dpi=300, force_new=Fals
     #             png_paths.append(new_png_file)
     #             if verbose: print("\t\t\t"+png_paths[-1], file=sys.stderr)
     #             os.replace(out_dir+"/"+png_file, png_paths[-1])
-    if not newly_created:
-        print("Using existing images ...", file=sys.stderr)
-        for i, png_file in sorted([ (int(a.split("-")[-1].split(".")[0]),  a) for a in os.listdir(out_dir+"/") if a.startswith(out_file_base)], key=itemgetter(0)):
-            png_paths.append(out_dir+"/"+png_file)
-            if verbose: print("\t"+png_paths[-1], file=sys.stderr)
+    # if not newly_created:
+    #     print("Using existing images ...", file=sys.stderr)
+    #     for i, png_file in sorted([ (int(a.split("-")[-1].split(".")[0]),  a) for a in os.listdir(out_dir+"/") if a.startswith(out_file_base)], key=itemgetter(0)):
+    #         png_paths.append(out_dir+"/"+png_file)
+    #         if verbose: print("\t"+png_paths[-1], file=sys.stderr)
     return png_paths
 
 def get_crop_rows(bin_img, max_black_percent=1):
