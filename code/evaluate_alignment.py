@@ -35,7 +35,7 @@ def main(args):
     else:   xml_in_files = [ntpath.basename(f) for f in glob(xml_mmax2_path+"/**", recursive=True) if f.endswith(".mmax")]
 
     # In evaluation, count alignment as correct if both contexts are minimally this similar
-    min_norm_lev_sim = 0.5
+    min_norm_lev_sim = float(args.min_context_lev_sim)
     kwic_width=int(args.kwic_width)
 
     xml_tp_all, xml_fp_all, xml_bd_all = 0,0,0
@@ -106,7 +106,7 @@ def main(args):
         # all xml bds in current file have been processed
         # Collect total number of xml bds
         xml_bd_all+=xml_disc.get_bd_count()
-        print("BD in xml ",xml_disc.get_bd_count())
+#        print("BD in xml ",xml_disc.get_bd_count())
         # Compute p for current pair
         p_xml   =   xml_tp_doc/(xml_tp_doc+xml_fp_doc)  # Correctly found / all found
         r_xml   =   xml_tp_doc/xml_disc.get_bd_count()  # Correctly found / all correct. Note: This assumes that all elements in xml can actually be mapped.
@@ -117,6 +117,7 @@ def main(args):
                 evalout.write("\n"+ocr_disc.info(mono=True))
                 evalout.write(xml_disc.info(mono=True))
                 evalout.write(args.alignment_label+": P, R, F: "+ str(p_xml)+ "\t"+ str(r_xml)+"\t"+ str(f_xml)+"\n")
+        print(args.alignment_label+": P, R, F: "+ str(p_xml)+ "\t"+ str(r_xml)+"\t"+ str(f_xml)+"\n")
 
     # all pairs have been processed
     p_xml   =   xml_tp_all/(xml_tp_all+xml_fp_all) # Correctly found / all found
@@ -125,6 +126,7 @@ def main(args):
     if eval_outfile:
         with open(eval_outfile,"a") as evalout:
             evalout.write(args.alignment_label+": P, R, F (micro): "+ str(p_xml)+ "\t"+ str(r_xml)+"\t"+ str(f_xml)+" n = "+str(n)+"\n")
+    print(args.alignment_label+": P, R, F (micro): "+ str(p_xml)+ "\t"+ str(r_xml)+"\t"+ str(f_xml)+" n = "+str(n)+"\n")
 
 if __name__ == '__main__':  
     parser = argparse.ArgumentParser()
@@ -134,6 +136,7 @@ if __name__ == '__main__':
     # Evaluate alignments with this label only
     parser.add_argument('--alignment_label',        required = True)
     parser.add_argument('--kwic_width',             required = False, default='15')
+    parser.add_argument('--min_context_lev_sim',    required = False, default='0.5')
     parser.add_argument('--eval_outfile',           required = False, default = "eval_out.txt")
 
     main(parser.parse_args())
