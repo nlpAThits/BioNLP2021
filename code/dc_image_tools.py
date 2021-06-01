@@ -340,7 +340,7 @@ def pdf_to_pngs(pdf_file, out_dir="./", save_as_base="", dpi=300, force_new=Fals
         subprocess.check_output(["pdftocairo", "-r", str(dpi), "-png", pdf_file, out_dir+"/"+out_file_base])
     else: 
         print("Using existing images ...", file=sys.stderr)        
-    return [ u[1] for u in sorted([ (int(a.split("-")[-1].split(".")[0]),  a) for a in os.listdir(out_dir+"/") if a.startswith(out_file_base)], key=itemgetter(0))]
+    return [ u[1] for u in sorted([ (int(a.split("-")[-1].split(".")[0]),  out_dir+"/"+a) for a in os.listdir(out_dir+"/") if a.startswith(out_file_base)], key=itemgetter(0))]
 
 def get_crop_rows(bin_img, max_black_percent=1):
     # Collect contiguous sequences of 'blank' rows in binarized image.
