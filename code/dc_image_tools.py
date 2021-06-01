@@ -343,7 +343,7 @@ def pdf_to_pngs(pdf_file, out_dir="./", save_as_base="", dpi=300, force_new=Fals
         for i, png_file in sorted([ (int(a.split("-")[-1].split(".")[0]),  a) for a in os.listdir(out_dir+"/") if a.startswith(out_file_base)], key=itemgetter(0)):
             new_png_file = out_dir+"/"+png_file[:png_file.rfind("-")]+"-"+str(i).zfill(3)+".png"
             if new_png_file not in png_paths:
-                png_paths.append()
+                png_paths.append(new_png_file)
                 if verbose: print("\t\t\t"+png_paths[-1], file=sys.stderr)
                 os.rename(out_dir+"/"+png_file, png_paths[-1])
     else:

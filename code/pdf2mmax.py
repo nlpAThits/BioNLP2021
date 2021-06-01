@@ -45,7 +45,7 @@ def main(args):
             print(page_no)
             # Read as grayscale
             fg_img          = cv2.imread(png_path, cv2.IMREAD_GRAYSCALE)
-            print("\t\tFile "+png_path, file=sys.stderr)
+            print("\tFile "+png_path, file=sys.stderr)
             print("\t\tOCR ...", file=sys.stderr)
             # Include char-level ocr for confidence values, default values otherwise
             TESS_CONFIG = '--oem 3 --psm 3 -c hocr_char_boxes=1 --dpi '+args.dpi +' --tessdata-dir ' + args.tessdata_dir
