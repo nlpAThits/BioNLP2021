@@ -327,7 +327,7 @@ def latex_to_text(latex_string, cleanup=True):
     if text != "":  return text
     else:           return None
 
-def pdf_to_pngs(pdf_file, out_dir="./", save_as_base="", dpi=300, force_new=False):
+def pdf_to_pngs(pdf_file, out_dir="./", save_as_base="", dpi=300, force_new=False, verbose=False):
     png_paths=[]
     if not os.path.exists(out_dir):
         os.mkdir(out_dir)
@@ -342,13 +342,13 @@ def pdf_to_pngs(pdf_file, out_dir="./", save_as_base="", dpi=300, force_new=Fals
         print("\t\tRenaming images ...", file=sys.stderr)
         for i, png_file in sorted([ (int(a.split("-")[-1].split(".")[0]),  a) for a in os.listdir(out_dir+"/") if a.startswith(out_file_base)], key=itemgetter(0)):
             png_paths.append(out_dir+"/"+png_file[:png_file.rfind("-")]+"-"+str(i).zfill(3)+".png")            
-            print("\t\t\t"+png_paths[-1], file=sys.stderr)
+            if verbose: print("\t\t\t"+png_paths[-1], file=sys.stderr)
             os.rename(out_dir+"/"+png_file, png_paths[-1])
     else:
         print("Using existing images ...", file=sys.stderr)
         for i, png_file in sorted([ (int(a.split("-")[-1].split(".")[0]),  a) for a in os.listdir(out_dir+"/") if a.startswith(out_file_base)], key=itemgetter(0)):            
             png_paths.append(out_dir+"/"+png_file)
-            print("\t"+png_paths[-1], file=sys.stderr)
+            if verbose: print("\t"+png_paths[-1], file=sys.stderr)
     return png_paths
 
 def get_crop_rows(bin_img, max_black_percent=1):

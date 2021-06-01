@@ -42,13 +42,14 @@ def main(args):
         for page_no, png_path in enumerate(png_paths):
             # Read as grayscale
             fg_img          = cv2.imread(png_path, cv2.IMREAD_GRAYSCALE)
-            print("\tOCR ...", file=sys.stderr)
+            print("\t"+png_path, file=sys.stderr)
+            print("\t\tOCR ...", file=sys.stderr)
             # Include char-level ocr for confidence values, default values otherwise
             TESS_CONFIG = '--oem 3 --psm 3 -c hocr_char_boxes=1 --dpi '+args.dpi +' --tessdata-dir ' + args.tessdata_dir
             ocr     =   pytesseract.image_to_pdf_or_hocr(fg_img, config=TESS_CONFIG, extension='hocr')
-            print("\tBS4 ...", file=sys.stderr)
+            print("\t\tBS4 ...", file=sys.stderr)
             soup            = bs(ocr, 'html.parser')
-            print("\thOCR2MMAX2 ...", file=sys.stderr)
+            print("\t\thOCR2MMAX2 ...", file=sys.stderr)
             # Add 1 to page no, because image page nos are 1-based
             hocr_to_mmax2(soup, page_no+1, mmax2_disc, ntpath.basename(png_path), verbose=VERBOSE)
 
