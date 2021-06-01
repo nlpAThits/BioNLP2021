@@ -14,7 +14,8 @@ def main(args):
     else:                               in_files = [f for f in glob(args.pdf_path+"/**", recursive=True) if f.endswith(".pdf")]
 
     for in_file in in_files:
-        mmax2_name = ntpath.basename(in_file).split(".")[0]
+        #mmax2_name = ntpath.basename(in_file).split(".")[0]
+        mmax2_name = ntpath.basename(in_file)[0:ntpath.basename(in_file).rfind('.')].replace('.LOCAL','')
         # Create temp common_paths file to get file-level access to MMAX2 data
         cp = MMAX2CommonPaths(args.mmax2_base_path+"common_paths.xml")
         cp.read(verbose=VERBOSE)
