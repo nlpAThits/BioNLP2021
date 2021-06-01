@@ -44,7 +44,7 @@ def main(args):
             fg_img          = cv2.imread(png_path, cv2.IMREAD_GRAYSCALE)
             print("\tOCR ...", file=sys.stderr)
             # Include char-level ocr for confidence values, default values otherwise
-            TESS_CONFIG = '--oem 3 --psm 3 -c hocr_char_boxes=1 --dpi '+args.dpi +' --tessdata-dir ' + args.tessdata 
+            TESS_CONFIG = '--oem 3 --psm 3 -c hocr_char_boxes=1 --dpi '+args.dpi +' --tessdata-dir ' + args.tessdata_dir
             ocr     =   pytesseract.image_to_pdf_or_hocr(fg_img, config=TESS_CONFIG, extension='hocr')
             print("\tBS4 ...", file=sys.stderr)
             soup            = bs(ocr, 'html.parser')
