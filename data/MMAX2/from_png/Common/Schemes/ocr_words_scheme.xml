@@ -13,13 +13,23 @@
 	<value id='val_char_confs' name='char_confs'/>
 </attribute>
 
+<attribute id='att_char_worst_conf' name='worst_char_conf' type='freetext'>
+	<value id='val_char_worst_conf' name='worst_char_conf'/>
+</attribute>
+
+<attribute id='att_glyph_char_confs' name='glyph_char_confs' type='freetext'>
+	<value id='val_glyph_char_confs' name='glyph_char_confs'/>
+</attribute>
+
+<attribute id='att_glyph_char_worst_conf' name='worst_glyph_char_conf' type='freetext'>
+	<value id='val_glyph_char_worst_conf' name='worst_glyph_char_conf'/>
+</attribute>
+
+
 <attribute id='att_char_bboxes' name='char_bboxes' type='freetext'>
 	<value id='val_char_bboxes' name='char_bboxes'/>
 </attribute>
 
-<attribute id='att_char_worst_conf' name='worst_char_conf' type='freetext'>
-	<value id='val_char_worst_conf' name='worst_char_conf'/>
-</attribute>
 
 <attribute id='att_page_no' name='page_no' type='freetext'>
 	<value id='val_page_no' name='page_no'/>
