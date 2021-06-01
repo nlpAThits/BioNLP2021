@@ -87,8 +87,11 @@ def main(args):
                 if left_sim>=min_norm_lev_sim and right_sim>=min_norm_lev_sim:
                     # The current xml bd is a tp, and will stay that unless it is overwritten by fp later
                     xml_bd_label="TP"
-                    print(xml_al_markable)
-                    print(ocr_al_markable)
+                    if args.add_validation:
+                        xml_al_markable.update_attributes({'validated':'y'})
+                        ocr_al_markable.update_attributes({'validated':'y'})
+                        print(xml_al_markable.get_attributes())
+                        print(ocr_al_markable.get_attributes())
                 else:
                     xml_bd_label="FP"
                     # If one ocr bd does not match, the entire xml bd does not match, so stop searching and comparing
@@ -138,9 +141,10 @@ if __name__ == '__main__':
     parser.add_argument('--verbose',                dest='verbose',         action='store_true',    default=False)
     # Evaluate alignments with this label only
     parser.add_argument('--alignment_label',        required = True)
-    parser.add_argument('--kwic_width',             required = False, default='15')
-    parser.add_argument('--min_context_lev_sim',    required = False, default='0.5')
-    parser.add_argument('--eval_outfile',           required = False, default = "eval_out.txt")
+    parser.add_argument('--add_validation',         required = False, default=False, dest='add_validation',  action='store_true')
+    parser.add_argument('--kwic_width',             required = False, default = '15')
+    parser.add_argument('--min_context_lev_sim',    required = False, default = '0.5')
+    parser.add_argument('--eval_outfile',           required = False, default = 'eval_out.txt')
 
     main(parser.parse_args())
 
