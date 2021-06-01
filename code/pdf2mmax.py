@@ -44,7 +44,7 @@ def main(args):
             fg_img          = cv2.imread(png_path, cv2.IMREAD_GRAYSCALE)
             print("\tOCR ...", file=sys.stderr)
             # Include char-level ocr for confidence values, default values otherwise
-            TESS_CONFIG = '--oem 3 --psm 3 -c hocr_char_boxes=1 --dpi '+args.dpi
+            TESS_CONFIG = '--oem 3 --psm 3 -c hocr_char_boxes=1 --dpi '+args.dpi +' --tessdata-dir ' + args.tessdata 
             ocr     =   pytesseract.image_to_pdf_or_hocr(fg_img, config=TESS_CONFIG, extension='hocr')
             print("\tBS4 ...", file=sys.stderr)
             soup            = bs(ocr, 'html.parser')
@@ -64,6 +64,9 @@ if __name__ == '__main__':
     parser.add_argument('--png_base_path',      required = True)
     parser.add_argument('--force_new_png',      required = False, default = False, dest='force_new_png',  action='store_true')
     parser.add_argument('--force_new_mmax2',    required = False, default = False, dest='force_new_mmax2',  action='store_true')
+
+    parser.add_argument('--tessdata-dir',       required = False, default = "tessdata")
+
 
     parser.add_argument('--dpi',            required = False, default="600")
     main(parser.parse_args())
