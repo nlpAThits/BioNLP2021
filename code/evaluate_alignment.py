@@ -42,7 +42,6 @@ def main(args):
     n=0
     # Iterate over previously aligned documents
     for (ocr_mmax2_file, xml_mmax2_file) in [(ocr_mmax2_path + os.path.sep + a, xml_mmax2_path + os.path.sep + a) for a in ocr_in_files if a in xml_in_files]:        
-#        if ntpath.basename(ocr_mmax2_file).startswith("10.1002_humu.22633.SRK006188.PMC4441004")==False:    continue
         n+=1    # Count all doc pairs
         ocr_disc = MMAX2Discourse(ocr_mmax2_file, verbose=args.verbose, mmax2_java_binding=None)
         ocr_disc.load_markables()
@@ -70,28 +69,19 @@ def main(args):
             for ocr_bd_id in ocr_bd_ids:
                 # ocr_bd_id *must* have *exactly one* alignment markable with xml_bd_id as target
                 aligned_xml_bd_id = [a.get_attributes()['target'] for a in ocr_disc.get_markablelevel('alignments').get_markables_for_basedata(ocr_bd_id) if a.get_attributes()['label']==args.alignment_label]
-                # print(aligned_xml_bd_id,xml_bd_id)
-                # WRONG: One xml_id can be mapped to more than one ocr. What is important is that xml_bd_id is *contained* in aligned_xml_bd_id
-                #assert (aligned_xml_bd_id[0]    == xml_bd_id)
                 assert len(aligned_xml_bd_id)   == 1 
-                #assert xml_bd_id in aligned_xml_bd_id[0].split('+')
                 if not xml_bd_id in aligned_xml_bd_id[0].split('+'):
                     print("CRITICAL ERROR!!",xml_mmax2_file)
 
                 # Left and right context must match min sim for *all* ocr ids in order for xml id to count as TP
                 # xml_bd_id is the same for all ocr_bd_ids
-#                # This is the same for all ocr_bd_ids, move out of this loop
-#                kwic_xml            = kwic_string_for_elements([xml_bd_id], xml_disc.get_basedata(), lsep=lsep, rsep=rsep, strip=True, width=kwic_width, fillwidth=80)
-#                xml_left_context    = kwic_xml.split(lsep)[0].strip()
-#                xml_right_context   = kwic_xml.split(rsep)[-1].strip()
                 kwic_ocr            = kwic_string_for_elements([ocr_bd_id], ocr_disc.get_basedata(), lsep=lsep, rsep=rsep, strip=True, width=kwic_width, fillwidth=60)
                 ocr_left_context    = kwic_ocr.split(lsep)[0].strip()
                 ocr_right_context   = kwic_ocr.split(rsep)[-1].strip()
                 left_sim            = 1-lev.distance(xml_left_context, ocr_left_context) / max(len(xml_left_context), len(ocr_left_context))
                 right_sim           = 1-lev.distance(xml_right_context, ocr_right_context) / max(len(xml_right_context), len(ocr_right_context))
 
-                # NEW: ONE context sim must be > min_norm_lev_sim
-                # NEWER: BOTH must be > 50
+                # BOTH context sims must be > 50
                 if left_sim>=min_norm_lev_sim and right_sim>=min_norm_lev_sim:
                     # The current xml bd is a tp, and will stay that unless it is overwritten by fp later
                     xml_bd_label="TP"
@@ -144,7 +134,7 @@ if __name__ == '__main__':
     # Evaluate alignments with this label only
     parser.add_argument('--alignment_label',        required = True)
     parser.add_argument('--kwic_width',             required = False, default='15')
-    parser.add_argument('--eval_outfile',           required = False, default = "evalout.txt")
+    parser.add_argument('--eval_outfile',           required = False, default = "eval_out.txt")
 
     main(parser.parse_args())
 
