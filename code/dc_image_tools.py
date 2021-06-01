@@ -347,7 +347,7 @@ def pdf_to_pngs(pdf_file, out_dir="./", save_as_base="", dpi=300, force_new=Fals
                 if verbose: print("\t\t\t"+png_paths[-1], file=sys.stderr)
                 #os.rename(out_dir+"/"+png_file, png_paths[-1])
                 if os.path.isfile(png_paths[-1]):
-                    print("Removing existing target", file=sys.stderr)
+                    print("Removing existing target "+png_paths[-1], file=sys.stderr)
                     os.remove(png_paths[-1])
                 os.replace(out_dir+"/"+png_file, png_paths[-1])
     else:
