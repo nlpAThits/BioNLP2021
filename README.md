@@ -102,3 +102,10 @@ Markables at ./data/MMAX2/from_png/converted/Markables/PMC3958920_alignments_mar
 		BS4 ...
 		hOCR2MMAX2 ...
 ```
+
+*Open file in MMAX2 annotation tool*
+```console
+(bionlp2021) foo@bar:~$ cd ../MMAX2/
+(bionlp2021) foo@bar:~$ ./mmax2_flex.sh ../BioNLP2021/data/MMAX2/from_png/converted/PMC3958920.mmax
+```
+<img src="./docs/images/mmax2_shot2.png" alt="drawing" width="50%"/>
