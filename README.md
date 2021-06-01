@@ -21,7 +21,8 @@ pip install pyMMAX2/.
 *Convert sample PMC-NXML to MMAX2 Format*
 ```console
 (bionlp2021) foo@bar:~$  python ./code/pmc2mmax.py --pmc_path ./data/nxml/PMC3958920.nxml --mmax2_base_path ./data/MMAX2/from_nxml/
-
+```
+```console
 Level file name set to PMC3958920_structure_markables.xml
 Markables at ./data/MMAX2/from_nxml/./Markables/PMC3958920_structure_markables.xml not found, skipping!
 Level file name set to PMC3958920_alignments_markables.xml
