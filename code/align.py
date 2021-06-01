@@ -48,7 +48,7 @@ def main(args):
         print("Retrieving alignment markables with label '"+args.alignment_label+"' ...", file=sys.stderr)
         to_del=ocr_disc.get_markablelevel('alignments').get_markables_by_attribute_value('label',args.alignment_label)
         if len(to_del)>0:
-            print("Removing "+len(to_del)+" markables ...", file=sys.stderr)
+            print("Removing "+str(len(to_del))+" markables ...", file=sys.stderr)
             for t in to_del:
                 t.delete()
             print("Done!", file=sys.stderr)
@@ -63,7 +63,7 @@ def main(args):
         print("Retrieving alignment markables with label '"+args.alignment_label+"' ...", file=sys.stderr)
         to_del=xml_disc.get_markablelevel('alignments').get_markables_by_attribute_value('label',args.alignment_label)
         if len(to_del)>0:
-            print("Removing "+len(to_del)+" markables ...", file=sys.stderr)
+            print("Removing "+str(len(to_del))+" markables ...", file=sys.stderr)
             for t in to_del:
                 t.delete()
             print("Done!", file=sys.stderr)
