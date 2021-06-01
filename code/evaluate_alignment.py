@@ -32,8 +32,8 @@ def main(args):
     else:   xml_in_files = [ntpath.basename(f) for f in glob(xml_mmax2_path+"/**", recursive=True) if f.endswith(".mmax")]
 
     # In evaluation, count alignment as correct if both contexts are minimally this similar
-    min_norm_lev_sim = float(args.min_context_lev_sim)
-    kwic_width=int(args.kwic_width)
+    min_norm_lev_sim    = float(args.min_context_lev_sim)
+    kwic_width          = int(args.kwic_width)
 
     xml_tp_all, xml_fp_all, xml_bd_all = 0,0,0
     n=0
@@ -46,14 +46,16 @@ def main(args):
         xml_disc.load_markables()
         xml_tp_doc, xml_fp_doc = 0, 0 # Counter for doc_level tp and fp
         # Our main eval dataset is xml, i.e. how many tokens from xml could be correctly mapped to an ocr token
-        xml_alignment_markables = xml_disc.get_markablelevel('alignments').get_markables_by_attribute_value('label', args.alignment_label) # alignment markables have span length 1
+        xml_alignment_markables = xml_disc.get_markablelevel('alignments').get_markables_by_attribute_value('label', args.alignment_label) 
+        # alignment markables always have span length 1
         # For each aligned bd elem in xml, get the ids of the ocr bd_elements that the bd in xml is aligned with. (target value)
         # These can be one or more!
         # One xml can be aligned to more than one ocr if 
         # - an ocr token was incorrectly split by ocr, and was then corrected by pre_conflate,
         # - by de-hyphenation
         # Get tuples of ocr bd ids (list) and *one* aligned xml_bd_id for all alignments
-        for (ocr_bd_ids, xml_bd_id) in [(a.get_attributes()['target'].split("+"), a.get_spanlists()[0][0]) for a in xml_alignment_markables if a.get_attributes().get('target',None)]:
+        for (ocr_bd_ids, xml_bd_id) in 
+            [(a.get_attributes()['target'].split("+"), a.get_spanlists()[0][0]) for a in xml_alignment_markables if a.get_attributes().get('target',None)]:
             # Go over all ocr_bd_ids that the current xml is mapped to.
             # Check context for each, but count this xml only *once* as tp or fp
             xml_bd_label=""
