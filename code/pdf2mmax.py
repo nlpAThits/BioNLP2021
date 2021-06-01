@@ -65,9 +65,8 @@ if __name__ == '__main__':
     parser.add_argument('--force_new_png',      required = False, default = False, dest='force_new_png',  action='store_true')
     parser.add_argument('--force_new_mmax2',    required = False, default = False, dest='force_new_mmax2',  action='store_true')
 
-    parser.add_argument('--tessdata-dir',       required = False, default = "tessdata")
+    parser.add_argument('--tessdata_dir',       required = False, default = "tessdata_dir")
 
-
-    parser.add_argument('--dpi',            required = False, default="600")
+    parser.add_argument('--dpi',            required = False, default="300")
     main(parser.parse_args())
 
