@@ -7,4 +7,10 @@
 		<value id="value_alignment_label" name="label"/>
 	</attribute>
 
+	<attribute id="att_alignment_validates" name="validated"  type="nominal_button">
+		<value id="alignment_validated_n" name="n"/>
+		<value id="alignment_validated_y" name="y"/>		
+	</attribute>
+
+
 </annotationscheme>
