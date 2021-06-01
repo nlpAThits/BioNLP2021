@@ -39,10 +39,13 @@ def main(args):
         mmax2_disc.load_markables()
 
         png_paths = pdf_to_pngs(in_file, out_dir=args.png_base_path, save_as_base="", force_new=args.force_new_png, dpi=args.dpi)
+        print(png_paths)
+        print(len(png_paths))
         for page_no, png_path in enumerate(png_paths):
+            print(page_no)
             # Read as grayscale
             fg_img          = cv2.imread(png_path, cv2.IMREAD_GRAYSCALE)
-            print("\t"+png_path, file=sys.stderr)
+            print("\t\tFile "+png_path, file=sys.stderr)
             print("\t\tOCR ...", file=sys.stderr)
             # Include char-level ocr for confidence values, default values otherwise
             TESS_CONFIG = '--oem 3 --psm 3 -c hocr_char_boxes=1 --dpi '+args.dpi +' --tessdata-dir ' + args.tessdata_dir
