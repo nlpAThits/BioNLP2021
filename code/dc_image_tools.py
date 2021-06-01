@@ -341,8 +341,8 @@ def pdf_to_pngs(pdf_file, out_dir="./", save_as_base="", dpi=300, force_new=Fals
         subprocess.check_output(["pdftocairo", "-r", str(dpi), "-png", pdf_file, out_dir+"/"+out_file_base])
     else: 
         print("Using existing images ...", file=sys.stderr)        
-    for i, png_file in sorted([ (int(a.split("-")[-1].split(".")[0]),  a) for a in os.listdir(out_dir+"/") if a.startswith(out_file_base)], key=itemgetter(0)):
-        png_paths.append(new_png_file)
+    png_paths = sorted([ (int(a.split("-")[-1].split(".")[0]),  a) for a in os.listdir(out_dir+"/") if a.startswith(out_file_base)], key=itemgetter(0)):
+#        png_paths.append(png_file)
 
     #         # Create name to which the current pdftocairo output will be renamed.
     #         new_png_file = out_dir+"/"+png_file[:png_file.rfind("-")]+"-"+str(i).zfill(3)+".png"
