@@ -75,7 +75,7 @@ def main(args):
 
     for in_file in in_files:
         #mmax2_name = ntpath.basename(args.pmc_path).split(".")[0]
-        mmax2_name = ntpath.basename(in_file)[0:ntpath.basename(in_file).rfind('.')].replace('.LOCAL','')        
+        mmax2_name = ntpath.basename(in_file)[0:ntpath.basename(in_file).rfind('.')].replace('.LOCAL','')
         # Create temp common_paths file to get file-level access to MMAX2 data
         cp = MMAX2CommonPaths(args.mmax2_base_path+"common_paths.xml")
         cp.read(verbose=VERBOSE)
@@ -193,7 +193,7 @@ def main(args):
                         m.update_attributes(atts)
 
         mmax2_disc.get_markablelevel('structure').write(to_path=mmax2_disc.get_mmax2_path()+mmax2_disc.get_markable_path(), overwrite=True, no_backup=True)
-        mmax2_disc.info()
+        print(mmax2_disc.info())
 
 if __name__ == '__main__':  
     parser = argparse.ArgumentParser(allow_abbrev=False)
