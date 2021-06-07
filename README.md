@@ -10,14 +10,14 @@ Instead, the ./data folder contains the open-access paper
 [Identification and characterization of trans-3-hydroxy-l-proline dehydratase and Δ1-pyrroline-2-carboxylate reductase involved in trans-3-hydroxy-l-proline metabolism of bacteria](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3958920) 
 
 in .pdf and .nxml format for demonstration. 
-Note, however, that both conversion tools (`pmc2mmax` and `pdf2mmax`) can be run in batch mode
+Note, however, that both conversion tools (`pmc2mmax` and `pdf2mmax`) can be run in batch mode for converting entire folders of input documents at once.
 
 For questions, you can contact [Mark-Christoph Müller](mailto:mark-christoph.mueller@h-its.org?subject=bionlp2021)
 
 *Setup*
 
 The alignment code uses the MMAX2 data format internally, so installing pyMMAX2 is **required**. 
-Installing the Java-based MMAX2 annotation tool is required for viewing the aligned data, and is therefore recommended.
+Installing the Java-based MMAX2 annotation tool is only required for viewing the converted data, and is strongly recommended.
 
 ```console
 conda create -n bionlp2021 python=3.7
@@ -120,8 +120,8 @@ Markables at ./data/MMAX2/from_png/converted/Markables/PMC3958920_alignments_mar
 
 *Open file in MMAX2 annotation tool*
 ```console
-(bionlp2021) foo@bar:~$ cd ../MMAX2/
-(bionlp2021) foo@bar:~$ ./mmax2_flex.sh ../BioNLP2021/data/MMAX2/from_png/converted/PMC3958920.mmax
+(bionlp2021) foo@bar:~$ cd MMAX2
+(bionlp2021) foo@bar:~$ ./mmax2_flex.sh ../data/MMAX2/from_png/converted/PMC3958920.mmax
 ```
 <img src="./docs/images/mmax2_shot2.png" alt="drawing" width="50%"/>
 
