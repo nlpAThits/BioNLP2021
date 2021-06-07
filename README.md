@@ -60,9 +60,13 @@ Markable levels   :
 
 *Convert sample PDF to MMAX2 Format (via PNG)*
 
-The following command expects the non-standard tessdata model at the provided path.
+Text recognition is done with tesseract (v 4) (via pytesseract). Use the **required** --tessdata_dir parameter to point tesseract to the language model to use.
+The following command expects the tessdata model at the provided path (you might have to adapt that to your system).
+
+Alternative tesseract models can be downloaded here: [tessdata_best](https://github.com/tesseract-ocr/tessdata_best). Download the folders to your system and point tesseract to them using the --tessdata_dir parameter. When trying different tesserat models, make sure to keep the --force_new_mmax2 option such that new OCR results will actually be created.
+
 ```console
-(bionlp2021) foo@bar:~$ python ./code/pdf2mmax.py --pdf_path ./data/pdf/real-pdf/PMC3958920.pdf  --mmax2_base_path ./data/MMAX2/from_png/converted/ --force_new_mmax2 --png_base_path ./data/temp_png/ --force_new_png --dpi 300 --tessdata_dir /usr/share/tesseract-ocr/4.00/tessdata_best
+(bionlp2021) foo@bar:~$ python ./code/pdf2mmax.py --pdf_path ./data/pdf/real-pdf/PMC3958920.pdf  --mmax2_base_path ./data/MMAX2/from_png/converted/ --force_new_mmax2 --png_base_path ./data/temp_png/ --force_new_png --dpi 300 --tessdata_dir /usr/share/tesseract-ocr/4.00/tessdata
 ```
 ```console
 Level file name set to PMC3958920_ocr_words_level.xml
