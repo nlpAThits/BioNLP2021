@@ -42,7 +42,7 @@ Markable levels   :
 
 *Open file in MMAX2 annotation tool*
 ```console
-(bionlp2021) foo@bar:~$ cd ../MMAX2/
+(bionlp2021) foo@bar:~$ cd MMAX2
 (bionlp2021) foo@bar:~$ ./mmax2_flex.sh ../BioNLP2021/data/MMAX2/from_nxml/PMC3958920.mmax
 ```
 <img src="./docs/images/mmax2_shot1.png" alt="drawing" width="50%"/>
