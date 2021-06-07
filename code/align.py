@@ -133,7 +133,7 @@ def main(args):
                     new_m, m = ocr_disc.get_markablelevel("alignments").add_markable(spanlists=[[ocr_id]], allow_duplicate_spans=True, apply_default=True)
                     # Now, no markable can exist here
                     assert new_m            
-                    m.update_attributes({'target':xml_id_string, 'label':args.alignment_label})
+                    m.update_attributes({'target':xml_id_string, 'label':args.alignment_label, 'validated':'u'})
 
                 # XML --> OCR. Create markable on XML level.
                 # A markable might exist there already 
@@ -149,7 +149,7 @@ def main(args):
                         new_m, m = xml_disc.get_markablelevel("alignments").add_markable(spanlists=[[xml_id]], allow_duplicate_spans=True, apply_default=True)
                         assert new_m
                         #if new_m:   
-                        m.update_attributes({'target':ocr_id, 'label':args.alignment_label})
+                        m.update_attributes({'target':ocr_id, 'label':args.alignment_label, 'validated':'u'})
 
             xml_disc.get_markablelevel("alignments").write(to_path=xml_disc.get_mmax2_path()+xml_disc.get_markable_path(), overwrite=True, no_backup=True)
             ocr_disc.get_markablelevel("alignments").write(to_path=ocr_disc.get_mmax2_path()+ocr_disc.get_markable_path(), overwrite=True, no_backup=True)        
