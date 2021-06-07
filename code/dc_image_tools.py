@@ -7,7 +7,6 @@ from PIL import ImageOps, Image, ImageFilter
 
 np.set_printoptions(threshold=sys.maxsize)
 
-
 def analyse_hocr_line_span_with_choices(line_span):
     line_string = ""
     stringindex2wordid, wordid2title, wordid2charconfs, wordid2worstcharconf, wordid2glyphcharconfs, wordid2worstglyphcharconf, wordid2charbboxes = {}, {}, {}, {}, {}, {}, {}
@@ -21,7 +20,6 @@ def analyse_hocr_line_span_with_choices(line_span):
             # Build up word from single chars
             word_text=word_text+c.text
             # Collect char level confs, but with decimals
-            #char_conf       =   int(c['title'].split(" ")[-1].split(".")[0])
             char_conf       =   float(c['title'].split(" ")[-1])
             if char_conf < worst_char_conf:
                 worst_char_conf=char_conf
@@ -152,13 +150,9 @@ def latex_to_text(latex_string, cleanup=True):
         latex_string=latex_string.replace('^{ ',     '^{')
         latex_string=latex_string.replace('_{ ',     '_{')
 
-#    print("Before (after cleanup)", latex_string)
-
     for (pat, start_tag, end_tag) in [('^{', '<sup>', '</sup> '), 
                                       ('_{', '<sub>', '</sub>'),
                                       ('\\begin{array}{', '',''),
-                                      #('\\begin{equation*}{', '',''),
-                                      #('\\begin{equation}{', '','')
                                       ]: # Empty tags mean: remove match
         plen = len(pat)
         while True:
@@ -166,40 +160,29 @@ def latex_to_text(latex_string, cleanup=True):
             start,end=None, None
             mod=False
             for i in range(len(latex_string)-(plen-1)):
-#                print(latex_string[i:i+plen], pat)
                 if latex_string[i:i+plen]==pat:
-#                    if plen==14: print("PAT", pat)
                     for j in range(i+(plen+1), len(latex_string)):
                         if latex_string[j]=="}":
-#                            if plen == 14: print("Close, before", open_paras, j, latex_string[j-3:j+3])
                             if open_paras==0:
                                 start=i
                                 end=j
                                 break
                             else:   open_paras-=1
-#                            if plen == 14: print("Close, after", open_paras, j, latex_string[j-3:j+3])
                         elif latex_string[j]=="{":
-#                            if plen == 14: print("Open, before", open_paras, j, latex_string[j-3:j+3]) 
                             open_paras+=1
-#                            if plen == 14: print("Open, after", open_paras, j, latex_string[j-3:j+3]) 
                     if start and end:
-#                        print("Cut from",start,"to", end)
-#                        print(latex_string[start:end+1])
                         if start_tag=="" and end_tag=="":
                             latex_string=latex_string[0:start]+latex_string[end+1:]
                         else:
                             latex_string=latex_string[0:start]+start_tag+latex_string[start+plen:end]+end_tag+latex_string[end+(plen-1):]
                             # This works for actual replacements
-                            #latex_string=latex_string[0:i]+start_tag+latex_string[i+plen:j]+end_tag+latex_string[j+(plen-1):]
                         mod=True
                         break
             if not mod:
                 break
-#    print("After", latex_string)
     with open('minilatex.tex','w') as tex_out:
        tex_out.write(latex_string)
     text = subprocess.check_output(["detex", "-l", "-e", "dummy", "minilatex.tex"], encoding='UTF-8').strip()
-#    print(text)
     if text != "":  return text
     else:           return None
 
@@ -208,7 +191,6 @@ def pdf_to_pngs(pdf_file, out_dir="./", save_as_base="", dpi=300, force_new=Fals
     if not os.path.exists(out_dir):
         os.mkdir(out_dir)
     out_file_base = save_as_base+ntpath.basename(pdf_file)+"@"+str(dpi)+"DPI-page"
-#    newly_created=False
     # Assume whole doc exists if page 01 exists
     if force_new or not os.path.exists(out_dir+"/"+out_file_base+"-01.png"):
         print("\tConverting "+pdf_file+" to "+ str(dpi)+" dpi PNG file ...", file=sys.stderr)
