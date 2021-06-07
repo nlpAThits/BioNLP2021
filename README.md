@@ -170,4 +170,4 @@ When viewed in MMAX2, aligned words (=those with an associated alignment markabl
 | <img src="./docs/images/mmax2_shot3.png" alt="drawing" width="100%"/> | <img src="./docs/images/mmax2_shot4.png" alt="drawing" width="100%"/> | 
 | -------------------------------------------------------------------- | -------------------------------------------------------------------- |
 
-As can be seen, quite a few matching words are aligned (rendered in pink, e.g. 
+As can be seen, quite a few matching words are aligned (rendered in pink, e.g. 'dehydratase') which should not be aligned. Some of these errors are likely due to forced alignment or other alignment heuristics.
