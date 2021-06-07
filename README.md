@@ -7,7 +7,7 @@ The repository contains code for converting both *.nxml* and *.pdf* files to MMA
 For copyright reasons, we cannot provide the scanned .pdf documents from our collection, nor all of the corresponding .pdf or .nxml files from PubMed Central.
 Instead, the ./data folder contains the open-access paper 
 
-[Identification and characterization of trans-3-hydroxy-l-proline dehydratase and Δ1-pyrroline-2-carboxylate reductase involved in trans-3-hydroxy-l-proline metabolism of bacteria](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3958920) 
+Seiya Watanabe, Yoshiaki Tanimoto, Seiji Yamauchi, Yuzuru Tozawa, Shigeki Sawayama, and Yasuo Watanabea (2014): [Identification and characterization of trans-3-hydroxy-l-proline dehydratase and Δ1-pyrroline-2-carboxylate reductase involved in trans-3-hydroxy-l-proline metabolism of bacteria](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3958920) FEBS Open Bio. 2014; 4: 240–250.
 
 in .pdf and .nxml format for demonstration. 
 Note, however, that both conversion tools (`pmc2mmax` and `pdf2mmax`) can be run in batch mode for converting entire folders of input documents at once.
