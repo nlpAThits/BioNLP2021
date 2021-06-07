@@ -7,15 +7,18 @@ For questions, you can contact [Mark-Christoph Müller](mailto:mark-christoph.mu
 
 *Setup*
 
+The alignment code uses the MMAX2 data format internally, so installing pyMMAX2 is **required**. 
+Installing the Java-based MMAX2 annotation tool is required for viewing the aligned data, and is therefore recommended.
+
 ```console
 conda create -n bionlp2021 python=3.7
 source activate bionlp2021
-git clone https://github.com/nlpAThits/MMAX2
 git clone https://github.com/nlpAThits/BioNLP2021
 cd BioNLP2021
 pip install -r requirements.txt
 git clone https://github.com/nlpAThits/pyMMAX2
 pip install pyMMAX2/.
+git clone https://github.com/nlpAThits/MMAX2
 ```
 
 *Convert sample PMC-NXML to MMAX2 Format*
@@ -38,13 +41,16 @@ Markable levels   :
 ```
 
 *Open file in MMAX2 annotation tool*
+
+(This is optional.)
 ```console
-(bionlp2021) foo@bar:~$ cd ../MMAX2/
-(bionlp2021) foo@bar:~$ ./mmax2_flex.sh ../BioNLP2021/data/MMAX2/from_nxml/PMC3958920.mmax
+(bionlp2021) foo@bar:~$ cd MMAX2
+(bionlp2021) foo@bar:~$ ./mmax2_flex.sh ../data/MMAX2/from_nxml/PMC3958920.mmax
 ```
 <img src="./docs/images/mmax2_shot1.png" alt="drawing" width="50%"/>
 
 *Convert sample PDF to MMAX2 Format (via PNG)*
+
 The following command expects the non-standard tessdata model at the provided path.
 ```console
 (bionlp2021) foo@bar:~$ python ./code/pdf2mmax.py --pdf_path ./data/pdf/real-pdf/PMC3958920.pdf  --mmax2_base_path ./data/MMAX2/from_png/converted/ --force_new_mmax2 --png_base_path ./data/temp_png/ --force_new_png --dpi 300 --tessdata_dir /usr/share/tesseract-ocr/4.00/tessdata_best
@@ -109,3 +115,8 @@ Markables at ./data/MMAX2/from_png/converted/Markables/PMC3958920_alignments_mar
 (bionlp2021) foo@bar:~$ ./mmax2_flex.sh ../BioNLP2021/data/MMAX2/from_png/converted/PMC3958920.mmax
 ```
 <img src="./docs/images/mmax2_shot2.png" alt="drawing" width="50%"/>
+
+*Create a word-level alignment of the two documents*
+```console
+(bionlp2021) foo@bar:~$ python 
+```
