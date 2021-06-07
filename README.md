@@ -163,5 +163,5 @@ Splitting...
 Force-aligning...
 ```
 
-<img src="./docs/images/mmax2_shot3.png" alt="drawing" width="50%"/> <img src="./docs/images/mmax2_shot4.png" alt="drawing" width="50%"/>
+| <img src="./docs/images/mmax2_shot3.png" alt="drawing" width="50%"/> | <img src="./docs/images/mmax2_shot4.png" alt="drawing" width="50%"/> | 
 
