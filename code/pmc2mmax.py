@@ -4,16 +4,13 @@ from pymmax2.pyMMAX2 import *
 from glob import glob
 from dc_image_tools import *
 
-#def parse_recursively(content_in, open_tags, pad_from_last_cont, mmax2_disc, styles, de_tex=False):
 def parse_recursively(content_in, open_tags, pad_from_last, mmax2_disc, styles, de_tex=False):
-#    print(pad_from_last_cont)
     # Go over all *top-level* content elements included in content incl. tags and text. style_atts will be None for tl regions
     # Content in these tags will be imported
     struct_tags =   ['title', 'surname', 'given-names', 'email', 'p', 'sec', 'xref', 'tr', 'td', 'caption', 'label', 'rendered-tex-math']
     # These tags are converted into typography-info for the MMAX2 data
     format_tags =   ['italic', 'sup', 'sub', 'underline', 'bold']
     for content in content_in.children:
-#        print(content.name)
         if content.name and (content.name in struct_tags or content.name in format_tags):
             # Normalize typography-related tags to 'span'
             if content.name in format_tags: cname='span'        
@@ -23,7 +20,6 @@ def parse_recursively(content_in, open_tags, pad_from_last, mmax2_disc, styles, 
             # Store tag list pos
             list_pos=len(open_tags)-1
             # Parse its contents recursively
-#            parse_recursively(content, open_tags, pad_from_last_cont, mmax2_disc, styles, de_tex=de_tex)
             parse_recursively(content, open_tags, pad_from_last, mmax2_disc, styles, de_tex=de_tex)
             # Get tag, and overwrite end with last bd element id
             (_, b_start, b_end, styles) = open_tags[list_pos]
@@ -33,20 +29,13 @@ def parse_recursively(content_in, open_tags, pad_from_last, mmax2_disc, styles, 
             tex_rendered=latex_to_text(content.get_text())
             if tex_rendered:
                 # parse again because de_tex will probably have added some tags like <sup>, <sub>, etc.
-#                parse_recursively(bs('<rendered-tex-math>'+tex_rendered+'</rendered-tex-math>', 'html.parser'), open_tags, pad_from_last_cont, mmax2_disc, styles, de_tex=de_tex)
                 parse_recursively(bs('<rendered-tex-math>'+tex_rendered+'</rendered-tex-math>', 'html.parser'), open_tags, pad_from_last, mmax2_disc, styles, de_tex=de_tex)
         elif not content.name:
             # Allow for absolute padding using more than one space            
             # Apply pad_from_last to the left of the current content
             content=pad_from_last[0]+content
             new_pad_len=len(content)-len(content.rstrip())
-#            print(new_pad_len)
-#            content=content.rstrip()
             pad_from_last[0] = new_pad_len * " "
-
-#            if pad_from_last_cont[0]:   content=" "+content
- #           if content.endswith(" "):   pad_from_last_cont[0]=True
-  #          else:                       pad_from_last_cont[0]=False
 
             # The content is text. The first elem of this text is the start of all currently open tags w/o any start.           
             span=mmax2_disc.add_basedata_elements_from_string(content)
@@ -55,10 +44,7 @@ def parse_recursively(content_in, open_tags, pad_from_last, mmax2_disc, styles, 
                     if not b_start: open_tags[p]=(b_name, span[0], b_end, b_styles)
         else:
             # Current elem is a tag that we want to ignore. It might have some interesting children, though, so recurse into it.
-#            parse_recursively(content, open_tags, pad_from_last_cont, mmax2_disc, styles, de_tex=de_tex)
             parse_recursively(content, open_tags, pad_from_last, mmax2_disc, styles, de_tex=de_tex)
-
-
 
 def main(args):
     VERBOSE=False
@@ -67,14 +53,12 @@ def main(args):
         return
 
     in_files=[]
-
     if os.path.isfile(args.pmc_path):
         in_files.append(args.pmc_path)
     else:
         in_files = [f for f in glob(args.pmc_path+"/**", recursive=True) if f.endswith(".nxml")]
 
     for in_file in in_files:
-        #mmax2_name = ntpath.basename(args.pmc_path).split(".")[0]
         mmax2_name = ntpath.basename(in_file)[0:ntpath.basename(in_file).rfind('.')].replace('.LOCAL','')
         # Create temp common_paths file to get file-level access to MMAX2 data
         cp = MMAX2CommonPaths(args.mmax2_base_path+"common_paths.xml")
@@ -119,10 +103,8 @@ def main(args):
             # Fix table markup to include space between cells 
             contents=contents.replace('<tr>'  , '     <tr>')    # Before row
             contents=contents.replace('</tr>' , '</tr> ')       # After row
-
             contents=contents.replace('<td'   , '     <td')     # Before each cell in row
             contents=contents.replace('</td>'   , '</td> ')     # After each cell in row
-
             contents=contents.replace('<th'   , '     <th')     # Before each th
             contents=contents.replace('</th>'   , '</th> ')     # After each th
 
@@ -130,7 +112,6 @@ def main(args):
             contents=contents.replace('</given-names></name>','</given-names>     </name>')
 
         soup = bs(contents, 'html.parser')
-
         was_added, lm = mmax2_disc.get_markablelevel("structure").add_markable([mmax2_disc.add_basedata_elements_from_string(soup.find('article-title').text)], apply_default=True)
         if was_added:   
             lm.update_attributes({'type':'pub-title'})
@@ -145,7 +126,6 @@ def main(args):
                 # Remember at which pos the current tag is stored
                 list_pos=len(open_tags)-1
                 # Parse full region recursively, no padding, no style attributes since this is the top-level
-                #pad_from_last=False
                 pad_from_last=""
                 parse_recursively(region, open_tags, [pad_from_last], mmax2_disc, [], de_tex=args.de_tex)
                 # Now we know where the current region ends
@@ -160,8 +140,6 @@ def main(args):
         for r_index in range(len(open_tags)-1,0,-1):
             # Get current tag
             (b_type, b_start, b_end, styles) = open_tags[r_index]
-            # Only if current tag and last seen is span
-    #       if b_type=='span' and last_type=='span':
             if b_type == last_type:
                 if b_start == last_start and b_end == last_end:
                     new_styles=styles.copy()
@@ -203,7 +181,6 @@ if __name__ == '__main__':
 
     parser.add_argument('--nice_names',         required = False, default = False, dest='nice_names',  action='store_true')
     parser.add_argument('--nice_tables',        required = False, default = False, dest='nice_tables',  action='store_true')
-
 
     main(parser.parse_args())
 
