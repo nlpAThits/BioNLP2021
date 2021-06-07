@@ -36,8 +36,6 @@ def compress(all_a_words, all_a_ids, all_b_words, all_b_ids, window_size, recurs
                 # Stop after finding *the first match* of win_a in list b. 
                 # This will only compress *the first* occurrence of each matching window in each list.
                 break
-#        if len(del_in_a)>0:
-#            break
     mod = False
     del_in_a=list(del_in_a)
     del_in_a.sort(reverse=True)
@@ -72,7 +70,6 @@ def conflate_hyphenated_ocr_splits(all_ocr_words, all_ocr_ids, all_pmc_words, al
     # Y
     print("De-hyphenating...", file=sys.stderr)
     remove_idxs=[]
-    #for hyp_idx in [m for m in range(2,len(all_ocr_words)-2) if all_ocr_words[m] in ['¬','-','-']]:    
     for hyp_idx in [m for m in range(2,len(all_ocr_words)-2) if all_ocr_words[m] in ['-', '−', '–', '¬','-','-']]:
         # Reconstruct potential unhyphenated word
         rec_word=all_ocr_words[hyp_idx-1]+all_ocr_words[hyp_idx+1]
@@ -190,10 +187,6 @@ def split_exact_ocr_conflations(all_ocr_words, all_ocr_ids, all_pmc_words, all_p
 def forcealign_tokens(ocr_words_aligned, ocr_ids_aligned, pmc_words_aligned, pmc_ids_aligned, 
                         alignments_performed, min_context_size=3, dynamic=True, recursive=True, gap_char="<<GAP>>", verbose=False):
 
-    # alignments_performed is a one-element list
-    # dynamic is not used
-
-    # alignments_performed is a Counter now
     print("Force-aligning...", file=sys.stderr)
     # The forcealign to end all forcealigns. May the force(align) be with you!
     non_match_sequence, non_match_sequences, remove_idxs=[], [], []
@@ -226,7 +219,6 @@ def forcealign_tokens(ocr_words_aligned, ocr_ids_aligned, pmc_words_aligned, pmc
         # String rep of the current alignment, regardless of whether it will be done or not
         alignment_key = ("".join(top_ocr_words)+" <-> "+("".join(bottom_pmc_words)))
         # Context size must be sufficient, **unless** dynamic=True and the particular alignment has been done before (in sufficient context)
-#        if (left_match_size < min_context_size or right_match_size < min_context_size) and alignment_key not in previous_valid_alignments:   continue
         if (left_match_size < min_context_size or right_match_size < min_context_size): continue # and not (dynamic and alignment_key in alignments_performed) :   continue
         # Check if top half of PMC is gap and bottom half of OCR is gap (the other constellation does not seem to occur)
         if len(nms) % 2 == 0 and  top_pmc_words == [gap_char]*int(len(nms)/2) and bottom_ocr_words == [gap_char]*int(len(nms)/2):
@@ -236,10 +228,6 @@ def forcealign_tokens(ocr_words_aligned, ocr_ids_aligned, pmc_words_aligned, pmc
             
             # Todo: Make this more elegant, with *one* algo for arbitrary len(nms)
             # Symmetrical gap pattern
-            # nms = [313, 314]
-            # OCR                   PMC
-            # 313 |   word_269      <<GAP>> NONE
-            # 314 <<GAP>> NONE      I   word_277
             if len(nms)==2:
                 if verbose: print("\tForcing " + str(top_ocr_words) + " --1--> " + str(bottom_pmc_words))
                 pmc_words_aligned[nms[0]] = pmc_words_aligned[nms[1]]
@@ -280,61 +268,7 @@ def forcealign_tokens(ocr_words_aligned, ocr_ids_aligned, pmc_words_aligned, pmc
                 pmc_ids_aligned[nms[3]]   = pmc_ids_aligned[nms[7]]
 
                 remove_idxs.extend([nms[4],nms[5],nms[6],nms[7]])
-                #previous_valid_alignments.add(alignment_key)
                 alignments_performed[0].update({alignment_key})
-
-        # else:
-        #     # No symmetrical pattern of gaps. Collect non-empty tokens and ids for each input
-        #     ocr_words   = [ocr_words_aligned[w] for w in nms if ocr_words_aligned[w] != gap_char]
-        #     ocr_ids     = [ocr_ids_aligned[w]   for w in nms if ocr_words_aligned[w] != gap_char]
-        #     pmc_words   = [pmc_words_aligned[w] for w in nms if pmc_words_aligned[w] != gap_char]
-        #     pmc_ids     = [pmc_ids_aligned[w]   for w in nms if pmc_words_aligned[w] != gap_char]
-
-        #     ocr_string="".join(ocr_words)
-        #     pmc_string="".join(pmc_words)
-
-        #     alignment_key = (ocr_string + " <-> " + pmc_string)
-
-        #     jsim=jaccard_similarity(ocr_string, pmc_string)
-        #     if len(ocr_words) + len(pmc_words) == 3:# and jsim >=0.33:
-        #         if len(ocr_words) == 1:
-        #             if verbose: print("Forcing (1) "+ocr_string+" ----> " + pmc_string + " "+ str(ocr_ids))
-        #             assert len(pmc_words)==2
-        #             # Map *one* ocr to *two* pmc. We cannot assume that the single entry (here:ocr) is always on top.
-        #             # Find index of ocr entry in nms. Its corresponding word and id from ocr will be copied to the other two ocr entries.
-        #             ocr_idx=-1
-        #             for i in nms:
-        #                 if ocr_words_aligned[i]!= gap_char:
-        #                     ocr_idx=i
-        #                     break
-        #             assert ocr_idx != -1
-        #             # Go over remaining entries in nms.
-        #             for i in [n for n in nms if n!=ocr_idx]:
-        #                 # Copy string and id to *all* gap ocr entries
-        #                 ocr_words_aligned[i]    = ocr_words_aligned[ocr_idx]
-        #                 ocr_ids_aligned[i]      = ocr_ids_aligned[ocr_idx]
-        #             remove_idxs.append(ocr_idx)
-        #         elif len(pmc_words)==1:
-        #             if verbose: print("Forcing (2) "+ocr_string+" ----> " + pmc_string + " "+ str(pmc_ids))
-        #             assert len(ocr_words)==2
-        #             # Map *one* pmc to *two* ocr. We cannot assume that the single entry (here:pmc) is always on top.
-        #             # Find index of pmc entry in nms.
-        #             pmc_idx=-1
-        #             for i in nms:
-        #                 if pmc_words_aligned[i]!= gap_char:
-        #                     pmc_idx=i
-        #                     break
-        #             assert pmc_idx != -1
-        #             # Go over remaining entries in nms.
-        #             ocr_id_string, ocr_word_string="",""
-        #             for i in [n for n in nms if n!=pmc_idx]:
-        #                 # Concat ids and string of *incorrectly* split ocr tokens                        
-        #                 ocr_id_string   = ocr_id_string  +"+"+ocr_ids_aligned[i]
-        #                 # Keep ocr version after mapping
-        #                 ocr_word_string = ocr_word_string + ocr_words_aligned[i]
-        #                 remove_idxs.append(i)
-        #             ocr_ids_aligned[pmc_idx]=ocr_id_string[1:]  # Skip leading + sign
-        #             ocr_words_aligned[pmc_idx]=ocr_word_string
 
         last_nms_end_idx=nms[-1]
 
@@ -401,7 +335,6 @@ def interpolate_span(span, max_gap=1):
     for i in range(int(span[0].split("_")[1]), int(span[-1].split("_")[1])+1):
         new_span.append("word_"+str(i))
     return new_span
-
 
 def create_id_to_id_mapping(ocr_words_aligned, pmc_words_aligned, ocr_ids_aligned, pmc_ids_aligned):
     # Create ID to ID mapping from OCR (key) to PMC (value)
