@@ -10,8 +10,6 @@ def main(args):
     ocr_mmax2_path                                  = args.ocr_mmax2_path
     xml_mmax2_path                                  = args.xml_mmax2_path
     ocr_in_files, xml_in_files                      = [],[]
-#    all_ocr_recalls, all_xml_recalls                = [],[]
-#    all_ocr_bd_counts, all_xml_bd_counts            = 0,0
     all_mapped_ocr_words, all_mapped_xml_words      = 0,0
 
     # Check for bulk processing
@@ -59,30 +57,29 @@ def main(args):
             # Save 
             xml_disc.get_markablelevel("alignments").write(to_path=xml_disc.get_mmax2_path()+xml_disc.get_markable_path(), overwrite=True, no_backup=True)
 
-#        if eval_outfile:
-#            with open(eval_outfile,"a") as evalout:
-#                evalout.write(ocr_disc.info(mono=True)+"\n")
-#                evalout.write(xml_disc.info(mono=True)+"\n\n")
-
         if args.dry_run:    continue
         # Get xml version as reference
         xml_str, all_xml_words, all_xml_ids, _ = xml_disc.render_string()
 
         if True: #not args.eval_only:
             if int(args.pre_comp_size)>0:
-                # No effect on alignmnt quality 
+                # No effect on alignment quality 
                 all_ocr_words, all_ocr_ids, all_xml_words, all_xml_ids = \
-                    compress(all_ocr_words, all_ocr_ids, all_xml_words, all_xml_ids, int(args.pre_comp_size), recursive=args.pre_comp_recursive, verbose=args.verbose)
+                    compress(all_ocr_words, all_ocr_ids, all_xml_words, all_xml_ids, 
+                        int(args.pre_comp_size), recursive=args.pre_comp_recursive, verbose=args.verbose)
             if args.de_hyphenate:
                 # Positive effect on quality 
                 all_ocr_words, all_ocr_ids = \
-                    conflate_hyphenated_ocr_splits(all_ocr_words, all_ocr_ids, all_xml_words, all_xml_ids, fold=True, verbose=args.verbose)            
+                    conflate_hyphenated_ocr_splits(all_ocr_words, all_ocr_ids, all_xml_words, all_xml_ids, 
+                        fold=True, verbose=args.verbose)
             if args.pre_conflate:
                 all_ocr_words, all_ocr_ids = \
-                    conflate_exact_ocr_splits(all_ocr_words, all_ocr_ids, all_xml_words, all_xml_ids, recursive=True, verbose=args.verbose)
+                    conflate_exact_ocr_splits(all_ocr_words, all_ocr_ids, all_xml_words, all_xml_ids, 
+                        recursive=True, verbose=args.verbose)
             if args.pre_split:        
                 all_ocr_words, all_ocr_ids = \
-                    split_exact_ocr_conflations(all_ocr_words, all_ocr_ids, all_xml_words, all_xml_ids, recursive=True, verbose=args.verbose)
+                    split_exact_ocr_conflations(all_ocr_words, all_ocr_ids, all_xml_words, all_xml_ids, 
+                        recursive=True, verbose=args.verbose)
 
             ocr_words_al, ocr_ids_al, xml_words_al, xml_ids_al = \
                 align_tokens(all_ocr_words, all_ocr_ids, all_xml_words, all_xml_ids, gap_char="<<GAP>>", method=args.alignment_type)
@@ -216,7 +213,6 @@ if __name__ == '__main__':
 
     # Compress trivial matches in OCR and PMC in order to help subsequent alignmend and reduce no. of tokens to align
     parser.add_argument('--pre_comp_size',      default="20")
-
     parser.add_argument('--pre_comp_recursive', dest='pre_comp_recursive',   action='store_true', default=False)
 
     # local or global. To be passed on to select either Bio.pairwise2.align.localxx or Bio.pairwise2.align.globalxx in alignment.
