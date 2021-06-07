@@ -169,3 +169,4 @@ When viewed in MMAX2, aligned words (=those with an associated alignment markabl
 
 | <img src="./docs/images/mmax2_shot3.png" alt="drawing" width="100%"/> | <img src="./docs/images/mmax2_shot4.png" alt="drawing" width="100%"/> | 
 | -------------------------------------------------------------------- | -------------------------------------------------------------------- |
+v
