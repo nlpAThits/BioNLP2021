@@ -34,6 +34,8 @@ git clone https://github.com/nlpAThits/MMAX2
 ```console
 (bionlp2021) foo@bar:~$  python ./code/pmc2mmax.py --pmc_path ./data/nxml/PMC3958920.nxml --mmax2_base_path ./data/MMAX2/from_nxml/
 ```
+
+*Console output*
 ```console
 Level file name set to PMC3958920_structure_markables.xml
 Markables at ./data/MMAX2/from_nxml/./Markables/PMC3958920_structure_markables.xml not found, skipping!
@@ -68,6 +70,8 @@ Alternative tesseract models can be downloaded here: [tessdata_best](https://git
 ```console
 (bionlp2021) foo@bar:~$ python ./code/pdf2mmax.py --pdf_path ./data/pdf/real-pdf/PMC3958920.pdf  --mmax2_base_path ./data/MMAX2/from_png/converted/ --force_new_mmax2 --png_base_path ./data/temp_png/ --force_new_png --dpi 300 --tessdata_dir /usr/share/tesseract-ocr/4.00/tessdata
 ```
+
+*console output*
 ```console
 Level file name set to PMC3958920_ocr_words_level.xml
 Markables at ./data/MMAX2/from_png/converted/Markables/PMC3958920_ocr_words_level.xml not found, skipping!
@@ -123,6 +127,8 @@ Markables at ./data/MMAX2/from_png/converted/Markables/PMC3958920_alignments_mar
 ```
 
 *Open file in MMAX2 annotation tool*
+(Optional)
+
 ```console
 (bionlp2021) foo@bar:~$ cd MMAX2
 (bionlp2021) foo@bar:~$ ./mmax2_flex.sh ../data/MMAX2/from_png/converted/PMC3958920.mmax
