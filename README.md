@@ -6,6 +6,8 @@ This is the code repository for the paper [Word-Level Alignment of Paper Documen
 For questions, you can contact [Mark-Christoph Müller](mailto:mark-christoph.mueller@h-its.org?subject=bionlp2021)
 
 *Setup*
+The alignment code uses the MMAX2 data format internally, so installing pyMMAX2 is *required*. 
+Installing the Java-based MMAX2 annotation tool is required for viewing the aligned data, and is therefore recommended.
 
 ```console
 conda create -n bionlp2021 python=3.7
