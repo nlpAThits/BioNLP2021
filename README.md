@@ -136,6 +136,9 @@ Markables at ./data/MMAX2/from_png/converted/Markables/PMC3958920_alignments_mar
 <img src="./docs/images/mmax2_shot2.png" alt="drawing" width="50%"/>
 
 *Create a word-level alignment of the two documents*
+
+The following creates an alignment with *all* pre- and post-processing options (best) between the .nxml and the PNG-converted .pdf (conv) file. The alignment is identified by the label *best_conv*. 
+
 ```console
-(bionlp2021) foo@bar:~$ python 
+(bionlp2021) foo@bar:~$ python ./code/align.py --ocr_mmax2_path ./data/MMAX2/from_png/converted/ --xml_mmax2_path ./data/MMAX2/from_nxml/ --alignment_label best_conv --de_hyphenate --pre_conflate --pre_split --post_forcealign
 ```
