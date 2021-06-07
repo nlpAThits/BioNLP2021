@@ -13,9 +13,9 @@ source activate bionlp2021
 git clone https://github.com/nlpAThits/BioNLP2021
 cd BioNLP2021
 pip install -r requirements.txt
-git clone https://github.com/nlpAThits/MMAX2
 git clone https://github.com/nlpAThits/pyMMAX2
 pip install pyMMAX2/.
+git clone https://github.com/nlpAThits/MMAX2
 ```
 
 *Convert sample PMC-NXML to MMAX2 Format*
