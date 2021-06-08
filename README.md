@@ -65,7 +65,7 @@ Markable levels   :
 Text recognition is done with tesseract (v 4) (via pytesseract). Use the **required** --tessdata_dir parameter to point tesseract to the language model to use.
 The following command expects the tessdata model at the provided path (you might have to adapt that to your system).
 
-Alternative tesseract models can be downloaded here: [tessdata_best](https://github.com/tesseract-ocr/tessdata_best). Download the folders to your system and point tesseract to them using the --tessdata_dir parameter. When trying different tesserat models, make sure to keep the --force_new_mmax2 option such that new OCR results will actually be created.
+Alternative tesseract models can be downloaded here: [tessdata_best](https://github.com/tesseract-ocr/tessdata_best). Download the folders to your system and point tesseract to them using the --tessdata_dir parameter. When trying different tesseract models, make sure to keep the --force_new_mmax2 option such that new OCR results will actually be created.
 
 ```console
 (bionlp2021) foo@bar:~$ python ./code/pdf2mmax.py --pdf_path ./data/pdf/real-pdf/PMC3958920.pdf  --mmax2_base_path ./data/MMAX2/from_png/converted/ --force_new_mmax2 --png_base_path ./data/temp_png/ --force_new_png --dpi 300 --tessdata_dir /usr/share/tesseract-ocr/4.00/tessdata
@@ -137,7 +137,7 @@ Markables at ./data/MMAX2/from_png/converted/Markables/PMC3958920_alignments_mar
 
 *Create a word-level alignment of the two documents*
 
-The following creates an alignment with *all* pre- and post-processing options (best) between the .nxml and the PNG-converted .pdf (conv) file. The alignment is identified by the label *best_conv*. 
+The following creates an alignment with *all* pre- and post-processing options (best) between the PNG-converted .pdf (conv) file and the .nxml file. The alignment is identified by the label *best_conv*. 
 
 ```console
 (bionlp2021) foo@bar:~$ python ./code/align.py --ocr_mmax2_path ./data/MMAX2/from_png/converted/ --xml_mmax2_path ./data/MMAX2/from_nxml/ --alignment_label best_conv --de_hyphenate --pre_conflate --pre_split --post_forcealign
@@ -162,3 +162,12 @@ Splitting...
 Splitting...
 Force-aligning...
 ```
+*Result*
+
+The alignment information is added to the two aligned MMAX2 documents by means of *markables* on the alignment level of each document, such that a word in the .nxml-based document (left) is associated with a markable that has as its 'target' attribute the id of the aligned word in the converted .png document (right).
+When viewed in MMAX2, aligned words (=those with an associated alignment markable) are rendered in pink.
+
+| <img src="./docs/images/mmax2_shot3.png" alt="drawing" width="100%"/> | <img src="./docs/images/mmax2_shot4.png" alt="drawing" width="100%"/> | 
+| -------------------------------------------------------------------- | -------------------------------------------------------------------- |
+
+As can be seen, quite a few 'matching' words are aligned (rendered in pink, e.g. 'dehydratase') which should not be aligned. Some of these errors are likely due to forced alignment or other alignment heuristics.
