@@ -167,15 +167,35 @@ Force-aligning...
 The alignment information is added to the two aligned MMAX2 documents by means of *markables* on the alignment level of each document, such that a word in the .nxml-based document (left) is associated with a markable that has as its 'target' attribute the id of the aligned word in the converted .png document (right).
 When viewed in MMAX2, aligned words (=those with an associated alignment markable) are rendered in pink.
 
-| <img src="./docs/images/mmax2_shot3.png" alt="drawing" width="100%"/> | <img src="./docs/images/mmax2_shot4.png" alt="drawing" width="100%"/> | 
+| <img src="./docs/images/mmax2_shot3.png" width="100%"/> | <img src="./docs/images/mmax2_shot4.png"  width="100%"/> | 
 | -------------------------------------------------------------------- | -------------------------------------------------------------------- |
 
 As can be seen, quite a few 'matching' words are aligned (rendered in pink, e.g. 'dehydratase') which should not be aligned. Some of these errors are likely due to forced alignment or other alignment heuristics.
 
 *Evaluation / Validation*
 
-Evaluation computes P, R, and F for the task of aligning words from the .nxml document to the corresponding image-based document. For details, see the paper.
+Evaluation computes P, R, and F for the task of aligning words from the .nxml document to the corresponding image-based document. For details, please see our paper.
 
 ```console
 (bionlp2021) foo@bar:~$ python ./code/evaluate_alignment.py --ocr_mmax2_path ./data/MMAX2/from_png/converted/ --xml_mmax2_path ./data/MMAX2/from_nxml/ --alignment_label best_conv --eval_outfile eval_out.txt --add_validation
 ```
+
+*Console output*
+```console
+Level file name set to PMC3958920_ocr_words_level.xml
+Level file name set to PMC3958920_ocr_lines_level.xml
+Level file name set to PMC3958920_alignments_markables.xml
+Level file name set to PMC3958920_structure_markables.xml
+Level file name set to PMC3958920_alignments_markables.xml
+File exists, creating backup ./data/MMAX2/from_nxml/./Markables/PMC3958920_alignments_markables.xml.1623133464353
+File exists, creating backup ./data/MMAX2/from_png/converted/Markables/PMC3958920_alignments_markables.xml.1623133464377
+best_conv: P, R, F: 0.9701711491442543	0.9301453352086263	0.9497367161321205
+
+best_conv: P, R, F (micro): 0.9701711491442543	0.9301453352086263	0.9497367161321205 n = 1
+```
+
+Using the --add_validation parameter will label TP and FP cases in both documents. In MMAX2, these can be visualized as follows (just re-load the previously loaded files in MMAX2).
+
+| <img src="./docs/images/mmax2_shot3_val.png"  width="100%"/> | <img src="./docs/images/mmax2_shot4_val.png"  width="100%"/> | 
+| -------------------------------------------------------------------- | -------------------------------------------------------------------- |
+
