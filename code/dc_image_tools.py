@@ -42,7 +42,10 @@ def analyse_hocr_line_span_with_choices(line_span):
         # Go over all chars in word which have an id (=lstm_choices), skip empty ones directly
         for cs in  [d for d in word_span.descendants if d.name=='span' and 'ocrx_cinfo' in d['class'] and d.has_attr('id')]:
             # We are only interested in the first one, which is the top conf
-            choice=list(cs.descendants)[0]
+            try:
+                choice=list(cs.descendants)[0]
+            except IndexError:
+                continue
             if choice.text.strip()=="":
                 continue
             glyph_char_conf       =   int(choice['title'].split(" ")[-1])
