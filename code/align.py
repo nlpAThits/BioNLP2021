@@ -10,7 +10,6 @@ def main(args):
     ocr_mmax2_path                                  = args.ocr_mmax2_path
     xml_mmax2_path                                  = args.xml_mmax2_path
     ocr_in_files, xml_in_files                      = [],[]
-    all_mapped_ocr_words, all_mapped_xml_words      = 0,0
 
     # Check for bulk processing
     if os.path.isfile(ocr_mmax2_path): 
@@ -61,7 +60,7 @@ def main(args):
         # Get xml version as reference
         xml_str, all_xml_words, all_xml_ids, _ = xml_disc.render_string()
 
-        if True: #not args.eval_only:
+        if True: #not a
             if int(args.pre_comp_size)>0:
                 # No effect on alignment quality 
                 all_ocr_words, all_ocr_ids, all_xml_words, all_xml_ids = \
@@ -84,33 +83,18 @@ def main(args):
             ocr_words_al, ocr_ids_al, xml_words_al, xml_ids_al = \
                 align_tokens(all_ocr_words, all_ocr_ids, all_xml_words, all_xml_ids, gap_char="<<GAP>>", method=args.alignment_type)
                                                                           
-            # Important! No matter what the pre-processing was, align above will have introduced *errors*.
-            # Maybe post-proc alignments, in partocular before passing them on to post_forcealign
-
-            # Force-align mismatches recursively if
-            # Case 1 (this was 'single' and 'multiple samelength' earlier)
-            # They are symmetrical and affect either one, two, three, or four tokens on each side, and if
-            # left and right context *of the current sequences* is at least 3 matching tokens, or
-            # WRONG: an identical sequence was seen and force-aligned in the proper context earlier (only if dynamic=True, which is not enforced currently).
-
-            # The effect of forcealign might be rather small (as borne out in the align eval), because it will ignore all the elements that were 
             if args.post_forcealign:
                 ocr_words_al, ocr_ids_al, xml_words_al, xml_ids_al = forcealign_tokens(ocr_words_al, ocr_ids_al, xml_words_al, xml_ids_al,
                                                                                                           all_forced_alignments, dynamic=True, 
                                                                                                           recursive=args.post_forcealign_recursive, 
                                                                                                           gap_char="<<GAP>>", verbose=args.verbose)
 
-            if args.verbose:# and alignments_performed: 
+            if args.verbose:
                 for f in all_forced_alignments[0]:
                     print(f, all_forced_alignments[0][f])
-                #print(all_forced_alignments[0])
 
             # Both lists should have the same length now
             check_alignment(ocr_words_al, xml_words_al, ocr_ids_al, xml_ids_al)
-    #        if args.verbose:
-    #            for i in range(len(ocr_words_al)): 
-    #                #if ocr_ids_aligned[i] != "NONE" and  xml_ids_aligned[i] != "NONE":
-    #                print(str(i)+"\t"+ocr_words_al[i]+"\t"+ocr_ids_al[i]+"\t"+xml_words_al[i]+"\t"+xml_ids_al[i])
             ocr2pmc=create_id_to_id_mapping(ocr_words_al, xml_words_al, ocr_ids_al, xml_ids_al)
 
             # Mapping dict done
@@ -153,45 +137,6 @@ def main(args):
 
             xml_disc.get_markablelevel("alignments").write(to_path=xml_disc.get_mmax2_path()+xml_disc.get_markable_path(), overwrite=True, no_backup=True)
             ocr_disc.get_markablelevel("alignments").write(to_path=ocr_disc.get_mmax2_path()+ocr_disc.get_markable_path(), overwrite=True, no_backup=True)        
-
-
-        # # How much of the pmc version could be mapped to ocr version?
-        # # Get number of alignment markables and divide by all tokens --> WRONG!
-        # # Todo: Fix based on # of bd_items, not just alignment markables. Done
-        # # Count no of ocr words that appear as target in all pmc alignments for current args.alignment_label
-        # mapped_ocr_words=0
-        # for d in xml_disc.get_markablelevel('alignments').get_markables_by_attribute_value('label',args.alignment_label):
-        #     mapped_ocr_words+=len(d.get_attributes().get('target','').split("+"))
-        # # For micro-avg
-        # all_mapped_ocr_words    += mapped_ocr_words
-        # all_ocr_bd_counts       += ocr_disc.get_bd_count()
-        # # r_ocr is the fraction of mapped ocr words in all ocr words for the current doc pair
-        # r_ocr = mapped_ocr_words / ocr_disc.get_bd_count()
-        # print("R_ocr:" + str(r_ocr))
-        # if eval_outfile:
-        #     with open(eval_outfile,"a") as evalout:
-        #         evalout.write(ocr_mmax2_file + " R_ocr " + str(r_ocr)+"\n")
-        # all_ocr_recalls.append(r_ocr)
-
-        # # Count no of pmc words that appear as target in all ocr alignments for current args.alignment_label
-        # mapped_xml_words=0
-        # for d in ocr_disc.get_markablelevel('alignments').get_markables_by_attribute_value('label',args.alignment_label):
-        #     mapped_xml_words+=len(d.get_attributes().get('target','').split("+"))
-        # # For micro-avg
-        # all_mapped_xml_words+=mapped_xml_words
-        # all_xml_bd_counts+=xml_disc.get_bd_count()
-        # # r_pmc is the fraction of mapped ocr words in all pmc words for the current doc pair        
-        # r_pmc = mapped_xml_words / xml_disc.get_bd_count()
-        # print("R_pmc:" + str(r_pmc))
-        # if eval_outfile:
-        #     with open(eval_outfile,"a") as evalout:
-        #         evalout.write(xml_mmax2_file + " R_pmc " + str(r_pmc)+"\n")
-        # all_xml_recalls.append(r_pmc)
-
-#    if eval_outfile: 
-#        with open(eval_outfile,"a") as evalout:
-#            for f in all_forced_alignments[0]:
-#                evalout.write(f + " " + str(all_forced_alignments[0][f])+"\n")
 
 if __name__ == '__main__':  
     parser = argparse.ArgumentParser(allow_abbrev=False)
