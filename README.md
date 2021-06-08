@@ -21,7 +21,7 @@ Installing the Java-based MMAX2 annotation tool is only required for viewing the
 
 ```console
 conda create -n bionlp2021 python=3.7
-source activate bionlp2021
+conda activate bionlp2021
 git clone https://github.com/nlpAThits/BioNLP2021
 cd BioNLP2021
 pip install -r requirements.txt
