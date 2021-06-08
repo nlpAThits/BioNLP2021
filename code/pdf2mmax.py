@@ -50,7 +50,8 @@ def main(args):
             TESS_CONFIG = '--oem 3 --psm 3 -c lstm_choice_mode=2 -c lstm_choice_amount=1 -c hocr_char_boxes=1 --dpi '+args.dpi +' --tessdata-dir ' + args.tessdata_dir
             ocr     =   pytesseract.image_to_pdf_or_hocr(fg_img, config=TESS_CONFIG, extension='hocr')
             print("\t\tBS4 ...", file=sys.stderr)
-            soup            = bs(ocr, 'html.parser')
+#            soup            = bs(ocr, 'html.parser')
+            soup            = bs(ocr, 'lxml')
             print("\t\thOCR2MMAX2 ...", file=sys.stderr)
             # Add 1 to page no, because image page nos are 1-based
             hocr_to_mmax2(soup, page_no+1, mmax2_disc, ntpath.basename(png_path), verbose=VERBOSE)
