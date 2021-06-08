@@ -199,3 +199,4 @@ Using the --add_validation parameter will label TP and FP cases in both document
 | <img src="./docs/images/mmax2_shot4_val.png"  width="100%"/> | <img src="./docs/images/mmax2_shot3_val.png"  width="100%"/> | 
 | -------------------------------------------------------------------- | -------------------------------------------------------------------- |
 
+Words considered as TP are displayed in green, FP as red. Note that evaluation *itself* (details are given in the paper) is rather strict: The first words of the abstract (*trans*-4-Hydroxy-l-p) are considered as FP due to the mismatch in the **left** context, although the alignment is clearly correct.
