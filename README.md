@@ -196,6 +196,6 @@ best_conv: P, R, F (micro): 0.9701711491442543	0.9301453352086263	0.949736716132
 
 Using the --add_validation parameter will label TP and FP cases in both documents. In MMAX2, these can be visualized as follows (just re-load the previously loaded files in MMAX2).
 
-| <img src="./docs/images/mmax2_shot3_val.png"  width="100%"/> | <img src="./docs/images/mmax2_shot4_val.png"  width="100%"/> | 
+| <img src="./docs/images/mmax2_shot4_val.png"  width="100%"/> | <img src="./docs/images/mmax2_shot3_val.png"  width="100%"/> | 
 | -------------------------------------------------------------------- | -------------------------------------------------------------------- |
 
