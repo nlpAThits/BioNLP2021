@@ -5,7 +5,7 @@ from pymmax2.pyMMAX2 import *
 from glob import glob
 
 def main(args):
-    VERBOSE=False
+#    VERBOSE=False
     if not os.path.exists(args.mmax2_base_path):
         print("MMAX2 base path "+args.mmax2_base_path+" does not exist!", file=sys.stderr)
         return
@@ -18,7 +18,7 @@ def main(args):
         mmax2_name = ntpath.basename(in_file)[0:ntpath.basename(in_file).rfind('.')].replace('.LOCAL','')
         # Create temp common_paths file to get file-level access to MMAX2 data
         cp = MMAX2CommonPaths(args.mmax2_base_path+"common_paths.xml")
-        cp.read(verbose=VERBOSE)
+        cp.read(verbose=args.verbose)
         words_filename=args.mmax2_base_path+cp.get_basedata_path()+mmax2_name+"_words.xml"
         if os.path.exists(words_filename):
             print("Basedata exists, removing "+words_filename, file=sys.stderr)
@@ -35,7 +35,7 @@ def main(args):
         mmax2_proj_name=args.mmax2_base_path+mmax2_name+".mmax"
         with open(mmax2_proj_name,'w') as mmax_out:
             mmax_out.write('<?xml version="1.0" encoding="UTF-8"?>\n<mmax_project>\n<words>'+mmax2_name+'_words.xml</words>\n<keyactions></keyactions>\n<gestures></gestures>\n</mmax_project>')
-        mmax2_disc = MMAX2Discourse(mmax2_proj_name, verbose=VERBOSE, mmax2_java_binding=None)
+        mmax2_disc = MMAX2Discourse(mmax2_proj_name, verbose=args.verbose, mmax2_java_binding=None)
         # Required for init, nothing will be loaded here.
         mmax2_disc.load_markables()
 
@@ -54,7 +54,7 @@ def main(args):
             soup            = bs(ocr, 'lxml')
             print("\t\thOCR2MMAX2 ...", file=sys.stderr)
             # Add 1 to page no, because image page nos are 1-based
-            hocr_to_mmax2(soup, page_no+1, mmax2_disc, ntpath.basename(png_path), verbose=VERBOSE)
+            hocr_to_mmax2(soup, page_no+1, mmax2_disc, ntpath.basename(png_path), verbose=args.verbose)
 
         mmax2_disc.get_basedata().write(to_path=mmax2_disc.get_mmax2_path()+mmax2_disc.get_basedata_path(), dtd_base_path='"', overwrite=True)
         mmax2_disc.get_markablelevel('ocr_words').write(to_path=mmax2_disc.get_mmax2_path()+mmax2_disc.get_markable_path(), overwrite=True, no_backup=True)
@@ -71,6 +71,8 @@ if __name__ == '__main__':
     
     parser.add_argument('--force_new_png',      required = False, default = False, dest='force_new_png',   action='store_true')
     parser.add_argument('--force_new_mmax2',    required = False, default = False, dest='force_new_mmax2', action='store_true')
+    parser.add_argument('--verbose',            required = False, default = False, dest='verbose', action='store_true')
+
 
     main(parser.parse_args())
 
