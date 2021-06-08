@@ -85,6 +85,7 @@ def analyse_hocr_line_span_with_choices(line_span):
             try:
                 choice=list(cs.descendants)[0]
             except IndexError:
+                print("No glyph info")
                 continue
             if choice.text.strip()=="":
                 continue
