@@ -10,7 +10,7 @@ Instead, the ./data folder contains the open-access paper
 Seiya Watanabe, Yoshiaki Tanimoto, Seiji Yamauchi, Yuzuru Tozawa, Shigeki Sawayama, and Yasuo Watanabea (2014): [Identification and characterization of trans-3-hydroxy-l-proline dehydratase and Δ1-pyrroline-2-carboxylate reductase involved in trans-3-hydroxy-l-proline metabolism of bacteria](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3958920) FEBS Open Bio. 2014; 4: 240–250.
 
 in .pdf and .nxml format for demonstration. 
-Note, however, that both conversion tools (`pmc2mmax` and `pdf2mmax`) can be run in bulk mode for converting entire folders of input documents at once. To use the bulk mode, provide paths (instead of files) to the respective command line parameters.
+Note, however, that both conversion tools (`pmc2mmax` and `pdf2mmax`) can be run in bulk mode for converting entire folders of input documents at once. To use the bulk mode, provide paths (instead of files) to the respective command line parameters (see below).
 
 For questions, you can contact [Mark-Christoph Müller](mailto:mark-christoph.mueller@h-its.org?subject=bionlp2021)
 
@@ -171,3 +171,11 @@ When viewed in MMAX2, aligned words (=those with an associated alignment markabl
 | -------------------------------------------------------------------- | -------------------------------------------------------------------- |
 
 As can be seen, quite a few 'matching' words are aligned (rendered in pink, e.g. 'dehydratase') which should not be aligned. Some of these errors are likely due to forced alignment or other alignment heuristics.
+
+*Evaluation / Validation*
+
+Evaluation computes P, R, and F for the task of aligning words from the .nxml document to the corresponding image-based document. For details, see the paper.
+
+```console
+(bionlp2021) foo@bar:~$ python ./code/evaluate_alignment.py --ocr_mmax2_path ./data/MMAX2/from_png/converted/ --xml_mmax2_path ./data/MMAX2/from_nxml/ --alignment_label best_conv --eval_outfile eval_out.txt --add_validation
+```
