@@ -164,10 +164,10 @@ Force-aligning...
 ```
 *Result*
 
-The alignment information is added to the two aligned MMAX2 documents by means of *markables* on the alignment level of each document, such that a word in the converted .png document (left) is associated with a markable that has as its 'target' attribute the id of the aligned word in the .nxml-based document.
+The alignment information is added to the two aligned MMAX2 documents by means of *markables* on the alignment level of each document, such that a word in the .nxml-based document (left) is associated with a markable that has as its 'target' attribute the id of the aligned word in the converted .png document (right).
 When viewed in MMAX2, aligned words (=those with an associated alignment markable) are rendered in pink.
 
 | <img src="./docs/images/mmax2_shot3.png" alt="drawing" width="100%"/> | <img src="./docs/images/mmax2_shot4.png" alt="drawing" width="100%"/> | 
 | -------------------------------------------------------------------- | -------------------------------------------------------------------- |
 
-As can be seen, quite a few matching words are aligned (rendered in pink, e.g. 'dehydratase') which should not be aligned. Some of these errors are likely due to forced alignment or other alignment heuristics.
+As can be seen, quite a few 'matching' words are aligned (rendered in pink, e.g. 'dehydratase') which should not be aligned. Some of these errors are likely due to forced alignment or other alignment heuristics.
