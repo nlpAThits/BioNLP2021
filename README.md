@@ -14,6 +14,8 @@ Note, however, that both conversion tools (`pmc2mmax` and `pdf2mmax`) can be run
 
 For questions, you can contact [Mark-Christoph Müller](mailto:mark-christoph.mueller@h-its.org?subject=bionlp2021)
 
+-----
+
 *Setup*
 
 The alignment code uses the MMAX2 data format internally, so installing pyMMAX2 is **required**. 
