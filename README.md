@@ -22,6 +22,7 @@ The alignment code uses the MMAX2 data format internally, so installing pyMMAX2 
 Installing the Java-based MMAX2 annotation tool is only required for viewing the converted data, and is strongly recommended.
 
 Also, the latest **release** version of tesseract (4.1.1) is required. tesseract is bundled by default with many Linuxes. Check you local version with ```tesseract --version```!
+If you need to install tesseract 4.1.1, more infos can be found on the [official tesseract page](https://github.com/tesseract-ocr/tesseract) or [here](https://notesalexp.org/tesseract-ocr/).
 
 
 ```console
