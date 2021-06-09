@@ -19,6 +19,9 @@ For questions, you can contact [Mark-Christoph Müller](mailto:mark-christoph.mu
 The alignment code uses the MMAX2 data format internally, so installing pyMMAX2 is **required**. 
 Installing the Java-based MMAX2 annotation tool is only required for viewing the converted data, and is strongly recommended.
 
+Also, the latest **release** version of tesseract (4.1.1) is required. tesseract is bundled by default with many Linuxes. Check you local version with ```esseract --version```!
+
+
 ```console
 conda create -n bionlp2021 python=3.7
 conda activate bionlp2021
