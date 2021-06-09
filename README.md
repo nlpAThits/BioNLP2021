@@ -78,7 +78,7 @@ Alternative tesseract models can be downloaded here: [tessdata_best](https://git
 (bionlp2021) foo@bar:~$ python ./code/pdf2mmax.py --pdf_path ./data/pdf/real-pdf/PMC3958920.pdf  --mmax2_base_path ./data/MMAX2/from_png/converted/ --force_new_mmax2 --png_base_path ./data/temp_png/ --force_new_png --dpi 300 --tessdata_dir /usr/share/tesseract-ocr/4.00/tessdata
 ```
 
-*console output*
+*Console output*
 ```console
 Level file name set to PMC3958920_ocr_words_level.xml
 Markables at ./data/MMAX2/from_png/converted/Markables/PMC3958920_ocr_words_level.xml not found, skipping!
