@@ -74,6 +74,5 @@ if __name__ == '__main__':
     parser.add_argument('--force_new_mmax2',    required = False, default = False, dest='force_new_mmax2', action='store_true')
     parser.add_argument('--verbose',            required = False, default = False, dest='verbose', action='store_true')
 
-
     main(parser.parse_args())
 

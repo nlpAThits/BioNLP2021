@@ -10,34 +10,12 @@ np.set_printoptions(threshold=sys.maxsize)
 def analyse_hocr_line_span_with_choices(line_span):
     line_string = ""
     stringindex2wordid, wordid2title, wordid2charconfs, wordid2worstcharconf, wordid2glyphcharconfs, wordid2worstglyphcharconf, wordid2charbboxes = {}, {}, {}, {}, {}, {}, {}
-    # Go over all words in in line
-
+    # Go over all words in line
     for word_span in [s for s in line_span.descendants if s.name == 'span' and 'ocrx_word' in s['class']]:
-        # tesseract 4 produces the following
-        # <span class="ocrx_word" id="word_1_1" title="bbox 339 57 425 171; x_wconf 82">
-        #     <span class="ocrx_cinfo" title="x_bboxes 339 57 396 171; x_conf 97.543045">l</span>
-        #     <span class="ocrx_cinfo" title="x_bboxes 362 61 425 158; x_conf 98.674965">e</span>
-
-        #     <span class="ocrx_cinfo" id="lstm_choices_1_1_1">
-        #         <span class="ocr_glyph" id="choice_1_1_1" title="x_confs 72">l</span>
-        #         <span class="ocr_glyph" id="choice_1_1_2" title="x_confs 11">(</span>
-        #         <span class="ocr_glyph" id="choice_1_1_3" title="x_confs 10">L</span>
-        #         <span class="ocr_glyph" id="choice_1_1_4" title="x_confs 4">[</span>
-        #         <span class="ocr_glyph" id="choice_1_1_5" title="x_confs 1">t</span>
-        #     </span>
-
-        #     <span class="ocrx_cinfo" id="lstm_choices_1_1_2">
-        #         <span class="ocr_glyph" id="choice_1_1_6" title="x_confs 92">e</span>
-        #         <span class="ocr_glyph" id="choice_1_1_7" title="x_confs 4">o</span>
-        #         <span class="ocr_glyph" id="choice_1_1_8" title="x_confs 2">&amp;</span>
-        #         <span class="ocr_glyph" id="choice_1_1_9" title="x_confs 0">@</span>
-        #     </span>
-        # </span>
 
         word_text, char_confs, char_bboxes = "", "", ""
         worst_char_conf = 100
         # Go over all chars in word which have a title (=normal chars w. bboxes)
-        # l and e above
         for c in [d for d in word_span.descendants if d.name=='span' and 'ocrx_cinfo' in d['class'] and d.has_attr('title')]:
             assert len(c.text)==1
             # Build up word from single chars
@@ -62,32 +40,16 @@ def analyse_hocr_line_span_with_choices(line_span):
 
         glyph_char_confs=""
         worst_glyph_char_conf = 100
-        # Go over all chars in word which have an id (=lstm_choices), skip empty ones directly
-        # for tesseract 4, these are
-        #     <span class="ocrx_cinfo" id="lstm_choices_1_1_1">
-        #         <span class="ocr_glyph" id="choice_1_1_1" title="x_confs 72">l</span>
-        #         <span class="ocr_glyph" id="choice_1_1_2" title="x_confs 11">(</span>
-        #         <span class="ocr_glyph" id="choice_1_1_3" title="x_confs 10">L</span>
-        #         <span class="ocr_glyph" id="choice_1_1_4" title="x_confs 4">[</span>
-        #         <span class="ocr_glyph" id="choice_1_1_5" title="x_confs 1">t</span>
-        #     </span>
-
-        #     <span class="ocrx_cinfo" id="lstm_choices_1_1_2">
-        #         <span class="ocr_glyph" id="choice_1_1_6" title="x_confs 92">e</span>
-        #         <span class="ocr_glyph" id="choice_1_1_7" title="x_confs 4">o</span>
-        #         <span class="ocr_glyph" id="choice_1_1_8" title="x_confs 2">&amp;</span>
-        #         <span class="ocr_glyph" id="choice_1_1_9" title="x_confs 0">@</span>
-        #     </span>
-
         for cs in  [d for d in word_span.descendants if d.name=='span' and 'ocrx_cinfo' in d['class'] and d.has_attr('id')]:
             # We are only interested in the first one, which is the top conf
-            print(cs)
+#            print("\n"+str(cs))
             try:
                 choice=list(cs.descendants)[0]
             except IndexError:
-                print("No glyph info")
+                print("No glyph info, please check your tesseract version!", file=sys.stderr)
                 continue
             if choice.text.strip()=="":
+                print("No glyph info, please check your tesseract version!", file=sys.stderr)
                 continue
             glyph_char_conf       =   int(choice['title'].split(" ")[-1])
             if glyph_char_conf < worst_glyph_char_conf:
@@ -104,7 +66,6 @@ def hocr_to_mmax2(hocr_soup, page_no, mmax2_discourse, img_name, verbose=False):
     # Go over all spans of class 'ocr_line'. Each has the line words as its children.
     if verbose: print(hocr_soup)
     for line_span in [s for s in hocr_soup.descendants if s.name == 'span' and 'ocr_line' in s['class']]:
-        #line_string, stringindex2wordid, wordid2title, wordid2charconfs, wordid2charbboxes, wordid2worstcharconf = analyse_hocr_line_span(line_span)
         line_string,stringindex2wordid,wordid2title,wordid2charconfs,wordid2worstcharconf,wordid2glyphcharconfs,wordid2worstglyphcharconf,wordid2charbboxes=\
                 analyse_hocr_line_span_with_choices(line_span)
         if line_string.strip() == "":   continue
