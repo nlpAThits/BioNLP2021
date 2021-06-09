@@ -68,7 +68,7 @@ Markable levels   :
 
 *Convert sample PDF to MMAX2 Format (via PNG)*
 
-Text recognition is done with tesseract (v 4) (via pytesseract). Use the **required** --tessdata_dir parameter to point tesseract to the language model to use.
+Text recognition is done with tesseract 4.1.1 (via pytesseract). Use the **required** --tessdata_dir parameter to point tesseract to the language model to use.
 The following command expects the tessdata model at the provided path (you might have to adapt that to your system).
 
 Alternative tesseract models can be downloaded here: [tessdata_best](https://github.com/tesseract-ocr/tessdata_best). Download the folders to your system and point tesseract to them using the --tessdata_dir parameter. When trying different tesseract models, make sure to keep the --force_new_mmax2 option such that new OCR results will actually be created.
@@ -206,3 +206,5 @@ Using the --add_validation parameter will label TP and FP cases in both document
 | -------------------------------------------------------------------- | -------------------------------------------------------------------- |
 
 Words considered as TP are displayed in green, FP as red. Note that evaluation *itself* (details are given in the paper) is rather strict: The first words of the abstract (*trans*-4-Hydroxy-l-p) are considered as FP due to the mismatch in the **left** context, although the alignment is clearly correct.
+
+For questions, you can contact [Mark-Christoph Müller](mailto:mark-christoph.mueller@h-its.org?subject=bionlp2021)
