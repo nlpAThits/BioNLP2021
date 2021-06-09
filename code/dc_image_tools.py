@@ -46,10 +46,9 @@ def analyse_hocr_line_span_with_choices(line_span):
             try:
                 choice=list(cs.descendants)[0]
             except IndexError:
-                print("No glyph info 1, please check your tesseract version!", file=sys.stderr)
+                print("No glyph info, please check your tesseract version!", file=sys.stderr)
                 continue
             if choice.text.strip()=="":
-                print("No glyph info 2, please check your tesseract version!", file=sys.stderr)
                 continue
             glyph_char_conf       =   int(choice['title'].split(" ")[-1])
             if glyph_char_conf < worst_glyph_char_conf:
