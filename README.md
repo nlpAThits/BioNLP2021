@@ -13,7 +13,7 @@ in .pdf and .nxml format for demonstration.
 Note, however, that both conversion tools (`pmc2mmax` and `pdf2mmax`) can be run in bulk mode for converting entire folders of input documents at once. To use the bulk mode, provide paths (instead of files) to the respective command line parameters (see below).
 
 For questions, you can contact [Mark-Christoph Müller](mailto:mark-christoph.mueller@h-its.org?subject=bionlp2021)
-You can also [create an issue](https://github.com/nlpAThits/BioNLP2021/issues/new), or [start a discussion](https://github.com/nlpAThits/BioNLP2021/discussions). We are looking forward to hearing from you!
+You can also [create an issue](https://github.com/nlpAThits/BioNLP2021/issues/new), or [start a discussion](https://github.com/nlpAThits/BioNLP2021/discussions/new). We are looking forward to hearing from you!
 
 -----
 
@@ -209,3 +209,4 @@ Using the --add_validation parameter will label TP and FP cases in both document
 Words considered as TP are displayed in green, FP as red. Note that evaluation *itself* (details are given in the paper) is rather strict: The first words of the abstract (*trans*-4-Hydroxy-l-p) are considered as FP due to the mismatch in the **left** context, although the alignment is clearly correct.
 
 For questions, you can contact [Mark-Christoph Müller](mailto:mark-christoph.mueller@h-its.org?subject=bionlp2021)
+You can also [create an issue](https://github.com/nlpAThits/BioNLP2021/issues/new), or [start a discussion](https://github.com/nlpAThits/BioNLP2021/discussions/new). We are looking forward to hearing from you!
