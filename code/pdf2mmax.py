@@ -56,7 +56,6 @@ def main(args):
             # Add 1 to page no, because image page nos are 1-based
             hocr_to_mmax2(soup, page_no+1, mmax2_disc, ntpath.basename(png_path), verbose=args.verbose)
 
-        print(mmax2_disc.get_basedata().get_elements())
         mmax2_disc.get_basedata().write(to_path=mmax2_disc.get_mmax2_path()+mmax2_disc.get_basedata_path(), dtd_base_path='"', overwrite=True)
         mmax2_disc.get_markablelevel('ocr_words').write(to_path=mmax2_disc.get_mmax2_path()+mmax2_disc.get_markable_path(), overwrite=True, no_backup=True)
         mmax2_disc.get_markablelevel('ocr_lines').write(to_path=mmax2_disc.get_mmax2_path()+mmax2_disc.get_markable_path(), overwrite=True, no_backup=True)
