@@ -13,6 +13,7 @@ in .pdf and .nxml format for demonstration.
 Note, however, that both conversion tools (`pmc2mmax` and `pdf2mmax`) can be run in bulk mode for converting entire folders of input documents at once. To use the bulk mode, provide paths (instead of files) to the respective command line parameters (see below).
 
 For questions, you can contact [Mark-Christoph Müller](mailto:mark-christoph.mueller@h-its.org?subject=bionlp2021)
+You can also create an [issue], or start a [discussion]. We are looking forward to hearing from you!
 
 -----
 
